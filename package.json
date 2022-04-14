@@ -1,1 +1,5 @@
-{}
+{
+   "scripts": {
+    "start": "cd fontend npm start"
+  },
+}

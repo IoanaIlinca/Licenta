@@ -66,10 +66,7 @@ function Login(props) {
         <Form>
           <Input placeholder="username" />
           <Input placeholder="password" />
-          {/*<Button}>
-            LOGIN
-          </Button>*/}
-          <Button onClick={alert("ana are mere")}>
+          <Button>
             LOGIN
           </Button>
           <Link>FORGOT YOUR PASSWORD?</Link>

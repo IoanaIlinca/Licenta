@@ -45,13 +45,13 @@ const Button = styled.button`
     font-weight: 600;
 `;
 
-function CategoryItem({ item }) {
+function CategoryItem({ category }) {
     return (
         <Container>
-            <Link to={`/products/${item.category}`}>
-                <Image src={item.image} />
+            <Link to={category.key !== '' ? `/products/${category.key}` : `/products`}>
+                <Image src={category.image} />
                 <Info>
-                    <Title>{item.title}</Title>
+                    <Title>{category.title}</Title>
                     <Button>SHOP NOW</Button>
                 </Info>
             </Link>

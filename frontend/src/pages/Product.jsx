@@ -1,7 +1,11 @@
 import { Add, Remove } from "@material-ui/icons";
-import React from 'react';
 import styled from "styled-components";
-import {mobile} from "../responsive";
+import { mobile } from "../responsive";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { publicRequest } from "../requestMethods";
+import { addProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
 
 const Container = styled.div``
 
@@ -64,6 +68,7 @@ const FilterColor = styled.div`
   height: 20px;
   border-radius: 50%;
   background-color: ${(props) => props.color};
+  border: black;
   margin: 0px 5px;
   cursor: pointer;
 `;
@@ -112,48 +117,92 @@ const Button = styled.button`
   }
 `;
 
+const ButtonQuantity = styled.button`
+  padding: 5px;
+  border: 2px solid black;
+  background-color: white;
+  cursor: pointer;
+  font-weight: 500;
+
+  &:hover{
+      background-color: #f8f4f4;
+      color: white;
+  }
+`;
+
 function Product(props) {
+    const location = useLocation();
+    const id = location.pathname.split("/")[2];
+    const [product, setProduct] = useState({});
+    const [color, setColor] = useState("");
+    const [size, setSize] = useState("");
+    const [quantity, setQuantity] = useState(1);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const getProduct = async () => {
+            try {
+                const res = await publicRequest.get("products/" + id);
+                setProduct(res.data);
+                if (color === "") {
+                    setColor(product.color[0]);
+                }
+                if (size === "") {
+                    setSize(product.sizes[0]);
+                }
+            } catch {}
+        };
+        getProduct();
+    }, [id]);
+
+    const handleQuantity = (type) => {
+        if (type === "dec" && quantity > 1) {
+            setQuantity(quantity - 1);
+        }
+        if (type === "inc") {
+            setQuantity(quantity + 1);
+        }
+    }
+
+   const handleClick = () => {
+        dispatch(addProduct({ ...product, quantity, color, size }));
+    };
+
     return (
         <Container>
             <Wrapper>
                 <ImageContainer>
-                    <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+                    <Image src={product.image} />
                 </ImageContainer>
                 <InfoContainer>
-                    <Title>Denim Jumpsuit</Title>
+                    <Title>{product.title}</Title>
                     <Description>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                        venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-                        iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-                        tristique tortor pretium ut. Curabitur elit justo, consequat id
-                        condimentum ac, volutpat ornare.
+                        {product.description}
                     </Description>
-                    <Price>$ 20</Price>
+                    <Price>$ {product.price}</Price>
                     <FilterContainer>
                         <Filter>
                             <FilterTitle>Color</FilterTitle>
-                            <FilterColor color="black" />
-                            <FilterColor color="darkblue" />
-                            <FilterColor color="gray" />
+                            {product.color?.map((c) => (
+                                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
+                            ))}
                         </Filter>
                         <Filter>
                             <FilterTitle>Size</FilterTitle>
-                            <FilterSize>
-                                <FilterSizeOption>XS</FilterSizeOption>
-                                <FilterSizeOption>S</FilterSizeOption>
-                                <FilterSizeOption>M</FilterSizeOption>
-                                <FilterSizeOption>L</FilterSizeOption>
-                                <FilterSizeOption>XL</FilterSizeOption>
+                            <FilterSize onChange={(e) => setSize(e.target.value)}>
+                                {product.sizes?.map((s) => (
+                                    <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                                ))}
                             </FilterSize>
                         </Filter>
                     </FilterContainer>
                     <AddContainer>
-                        <AmountContainer>
-                            <Remove />
-                            <Amount>1</Amount>
-                            <Add />
-                        </AmountContainer>
-                        <Button>ADD TO CART</Button>
+                            <AmountContainer>
+                                <Remove onClick={() => handleQuantity("dec")} />
+                                <Amount>{quantity}</Amount>
+                                <Add onClick={() => handleQuantity("inc")} />
+                            </AmountContainer>
+                        <Button onClick={handleClick}>ADD TO CART</Button>
                     </AddContainer>
                 </InfoContainer>
             </Wrapper>

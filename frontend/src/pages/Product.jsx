@@ -144,12 +144,8 @@ function Product(props) {
             try {
                 const res = await publicRequest.get("products/" + id);
                 setProduct(res.data);
-                if (color === "") {
-                    setColor(product.color[0]);
-                }
-                if (size === "") {
-                    setSize(product.sizes[0]);
-                }
+                setColor(res.data.color[0]);
+                setSize(res.data.sizes[0]);
             } catch {}
         };
         getProduct();

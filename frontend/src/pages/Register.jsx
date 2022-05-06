@@ -61,7 +61,7 @@ function Register(props) {
             <Wrapper>
                 <Title>CREATE AN ACCOUNT</Title>
                 <Form>
-                    <Input placeholder="name" />
+                    <Input placeholder="first name" />
                     <Input placeholder="last name" />
                     <Input placeholder="username" />
                     <Input placeholder="email" />

@@ -11,9 +11,22 @@ import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
 import Login from "./pages/login/Login";
 import {useSelector} from "react-redux";
+import Web3 from "web3";
+import {useEffect, useState} from "react";
+import {getMere, init} from "./web3/web3Init";
 
 function App() {
-  const admin = useSelector((state) => state.user.currentUser ?  state.user.currentUser.isAdmin : null);
+    useEffect(() => {
+        init();
+    }, []);
+
+    getMere().then((msg) =>{
+            console.log(msg);
+        });
+
+
+
+    const admin = useSelector((state) => state.user.currentUser ?  state.user.currentUser.isAdmin : null);
   return (
     <Router>
       <Switch>

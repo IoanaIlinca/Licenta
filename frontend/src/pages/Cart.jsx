@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from "styled-components";
-import { Add, Remove } from "@material-ui/icons";
+import { Add, Remove, Clear } from "@material-ui/icons";
 import {mobile} from "../responsive";
 import {useSelector} from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -159,6 +159,13 @@ const Button = styled.button`
   font-weight: 600;
 `;
 
+const DeleteIcon = styled.span`
+  justify-content: center;
+  padding-right: 10%;
+  padding-top: 5px;
+  justify-items: center;
+`
+
 function Cart(props) {
     const cart = useSelector(state => state.cart);
     const [stripeToken, setStripeToken] = useState(null);
@@ -188,30 +195,22 @@ function Cart(props) {
             <Wrapper>
                 <Title>YOUR BAG</Title>
                 <Top>
-                    <TopButton>CONTINUE SHOPPING</TopButton>
+                    <Link to={"/products"}>
+                        <TopButton>CONTINUE SHOPPING</TopButton>
+                    </Link>
+
                     <TopTexts>
                         <TopText>Shopping Bag</TopText>
-                        <TopText>Your Wishlist </TopText>
+                       {/* <TopText>Your Wishlist </TopText>*/}
                     </TopTexts>
 
-
-                        <StripeCheckout
-                        name="WEBSHOP"
-                        image="https://avatars.githubusercontent.com/u/1486366?v=4"
-                        billingAddress
-                        shippingAddress
-                        description={`Your total is $${cart.total}`}
-                        amount={cart.total * 100}
-                        token={onToken}
-                        stripeKey={KEY}
-                    >
-                            <TopButton type="filled">CHECKOUT NOW</TopButton>
-                    </StripeCheckout>
+                    <TopButton type="filled">EMPTY CART</TopButton>
                 </Top>
                 <Bottom>
                     <Info>
                         {cart.products.map(product => (
                             <Product>
+
                                 <ProductDetail>
                                     <Image src={product.image}/>
                                     <Details>
@@ -228,13 +227,18 @@ function Cart(props) {
                                     </Details>
                                 </ProductDetail>
                                 <PriceDetail>
+
                                     <ProductAmountContainer>
-                                        <Add/>
-                                        <ProductAmount>{product.quantity}</ProductAmount>
                                         <Remove/>
+                                        <ProductAmount>{product.quantity}</ProductAmount>
+                                        <Add/>
                                     </ProductAmountContainer>
                                     <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
                                 </PriceDetail>
+                                <DeleteIcon>
+                                    <Clear/>
+                                </DeleteIcon>
+
                             </Product>))
                         }
                     </Info>

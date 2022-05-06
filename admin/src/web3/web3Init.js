@@ -1,9 +1,10 @@
 import Web3 from "web3";
 import DemoContractBuild from 'contracts/Demo.json';
+import ProductContractBuild from 'contracts/ProductRepo.json';
 
 let selectedAccount;
 
-let demoContract;
+let productContract;
 let isInitialised = false;
 
 export const init = async () => {
@@ -29,9 +30,9 @@ export const init = async () => {
 
     const networkId = await web3.eth.net.getId();
 
-    demoContract = new web3.eth.Contract(
-        DemoContractBuild.abi,
-        DemoContractBuild.networks[networkId].address
+    productContract = new web3.eth.Contract(
+        ProductContractBuild.abi,
+        ProductContractBuild.networks[networkId].address
     );
 
     isInitialised = true;
@@ -41,5 +42,5 @@ export const getMere = async () => {
     if(!isInitialised) {
         await init();
     }
-   return demoContract.methods.getCounter().call({ gas: 8000000 });
+   return productContract.methods.addProduct("6267bd30d48a6d125b7348e1", "Nike t-shirt", 3000, 24).call({gas: 800000});
 }

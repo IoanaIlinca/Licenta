@@ -14,6 +14,7 @@ import {useSelector} from "react-redux";
 import Web3 from "web3";
 import {useEffect, useState} from "react";
 import {getMere, init} from "./web3/web3Init";
+import OrderList from "./pages/orderList/OrderList";
 
 function App() {
     useEffect(() => {
@@ -31,8 +32,8 @@ function App() {
     <Router>
       <Switch>
         <Route path="/login">
-          <Login />
-        </Route>
+              <Login />
+          </Route>
         {admin && (
             <>
               <Topbar />
@@ -58,6 +59,9 @@ function App() {
                 </Route>
                 <Route path="/newproduct">
                   <NewProduct />
+                </Route>
+                  <Route path="/orders">
+                  <OrderList />
                 </Route>
               </div>
             </>

@@ -14,6 +14,8 @@ export default function NewProduct() {
   const [inputs, setInputs] = useState({});
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState([]);
+  const [siz, setSiz] = useState([]);
+  const [col, setCol] = useState([]);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -23,6 +25,14 @@ export default function NewProduct() {
   };
   const handleCat = (e) => {
     setCat(e.target.value.split(","));
+  };
+
+  const handleSiz = (e) => {
+    setSiz(e.target.value.split(","));
+  };
+
+  const handleCol = (e) => {
+    setCol(e.target.value.split(","));
   };
 
   const handleClick = (e) => {
@@ -61,7 +71,7 @@ export default function NewProduct() {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            const product = { ...inputs, image: downloadURL, categories: cat };
+            const product = { ...inputs, image: downloadURL, categories: cat, sizes: siz, color: col };
             addProduct(product, dispatch);
           });
         }
@@ -109,7 +119,15 @@ export default function NewProduct() {
           </div>
           <div className="addProductItem">
             <label>Categories</label>
-            <input type="text" placeholder="mana" onChange={handleCat} />
+            <input type="text" placeholder="man" onChange={handleCat} />
+          </div>
+          <div className="addProductItem">
+            <label>Colors</label>
+            <input type="text" placeholder="black" onChange={handleCol} />
+          </div>
+          <div className="addProductItem">
+            <label>Sizes</label>
+            <input type="text" placeholder="S" onChange={handleSiz} />
           </div>
           <div className="addProductItem">
             <label>Stock</label>

@@ -1,6 +1,27 @@
 import "./newUser.css";
+import {useState} from "react";
+import {useDispatch} from "react-redux";
+import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
+import app from "../../firebase";
+import {addProduct} from "../../redux/apiCalls";
+
+
 
 export default function NewUser() {
+  const [inputs, setInputs] = useState({});
+  const dispatch = useDispatch();
+
+  const handleChange = (e) => {
+    setInputs((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+
+ /* const handleClick = (e) => {
+    e.preventDefault();
+    const user = { ...inputs};
+            addUser(product, dispatch);
+  };*/
   return (
     <div className="newUser">
       <h1 className="newUserTitle">New User</h1>

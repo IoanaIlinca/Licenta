@@ -21,9 +21,11 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 // UPDATE
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     try {
-        const updatedProduct = await User.findByIdAndUpdate(req.params.id, {
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
             $set: req.body
-        }, {new: true});
+        }, {
+            new: true
+        });
         res.status(200).json(updatedProduct);
     }
     catch (err) {

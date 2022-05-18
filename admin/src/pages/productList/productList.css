@@ -29,3 +29,21 @@
     color: red;
     cursor: pointer;
 }
+
+.productCreateContainer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.productAddButton {
+    width: 80px;
+    border: none;
+    padding: 5px;
+    background-color: teal;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+}

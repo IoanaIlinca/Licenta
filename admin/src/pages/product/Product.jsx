@@ -3,27 +3,28 @@ import "./product.css";
 import Chart from "../../components/chart/Chart";
 import { productData } from "../../dummyData";
 import { Publish } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { userRequest } from "../../requestMethods";
-import {addProduct} from "../../redux/apiCalls";
-import {getStorage, ref, uploadBytesResumable} from "firebase/storage";
+import {addProduct, updateProduct} from "../../redux/apiCalls";
+import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
 import app from "../../firebase";
 
 export default function Product() {
-    const [inputs, setInputs] = useState({});
+
     const [file, setFile] = useState(null);
     const location = useLocation();
     const productId = location.pathname.split("/")[2];
+
     const [pStats, setPStats] = useState([]);
-   /* const fileName = new Date().getTime() + file.name;
-    const storage = getStorage(app);
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);*/
+    const dispatch = useDispatch();
 
     const product = useSelector((state) =>
         state.product.products.find((product) => product._id === productId)
     );
+    const [inputs, setInputs] = useState(product);
+    const [cat, setCat] = useState(product.categories);
+    console.log(product);
 
     const MONTHS = useMemo(
         () => [
@@ -69,10 +70,58 @@ export default function Product() {
         getStats();
     }, [productId, MONTHS]);
 
-    const handleUpdateClick = (e) => {
+    const handleCat = (e) => {
+        setCat(e.target.value.split(","));
+    };
+
+    const handleUpdate= (e) => {
         e.preventDefault();
-        /*const product = { ...inputs, image: downloadURL, categories: cat };
-        addProduct(product, dispatch);*/
+        console.log(inputs);
+        if (file) {
+            const fileName = new Date().getTime() + file.name;
+            const storage = getStorage(app);
+            const storageRef = ref(storage, fileName);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            // Register three observers:
+            // 1. 'state_changed' observer, called any time the state changes
+            // 2. Error observer, called on failure
+            // 3. Completion observer, called on successful completion
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    // Observe state change events such as progress, pause, and resume
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    const progress =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log("Upload is " + progress + "% done");
+                    switch (snapshot.state) {
+                        case "paused":
+                            console.log("Upload is paused");
+                            break;
+                        case "running":
+                            console.log("Upload is running");
+                            break;
+                        default:
+                    }
+                },
+                (error) => {
+                    // Handle unsuccessful uploads
+                },
+                () => {
+                    // Handle successful uploads on complete
+                    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        const newProduct = { ...inputs, image: downloadURL, categories: cat };
+                        updateProduct(productId, newProduct, dispatch);
+                    });
+                }
+            );
+        }
+        else {
+            const newProduct = { ...inputs, categories: cat };
+            updateProduct(productId, newProduct, dispatch);
+        }
     }
 
     return (
@@ -83,7 +132,7 @@ export default function Product() {
                     <button className="productAddButton">Create</button>
                 </Link>
             </div>
-            <div className="productTop">
+           {/* <div className="productTop">
                 <div className="productTopLeft">
                     <Chart data={pStats} dataKey="Sales" title="Sales Performance" />
                 </div>
@@ -107,16 +156,31 @@ export default function Product() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>*/}
             <div className="productBottom">
                 <form className="productForm">
                     <div className="productFormLeft">
                         <label>Product Name</label>
-                        <input type="text" placeholder={product.title} onChange={handleChange}/>
+                        <input name="title" type="text"
+                               placeholder={product.title}
+                               defaultValue={product.title}
+                               onChange={handleChange}/>
                         <label>Product Description</label>
-                        <input type="text" placeholder={product.description} />
+                        <input name="description" type="text"
+                               placeholder={product.description}
+                               defaultValue={product.description}
+                               onChange={handleChange}
+                        />
                         <label>Price</label>
-                        <input type="text" placeholder={product.price} onChange={handleChange}/>
+                        <input name="price" type="text"
+                               placeholder={product.price}
+                               defaultValue={product.price}
+                               onChange={handleChange}/>
+                        <label>Categories</label>
+                        <input type="text"
+                               placeholder={product.categories.join(",")}
+                               defaultValue={product.categories.join(",")}
+                               onChange={handleCat}/>
                         <label>In Stock</label>
                         <select name="inStock" id="idStock">
                             <option value="true">Yes</option>
@@ -131,7 +195,7 @@ export default function Product() {
                             </label>
                             <input type="file" id="file" style={{ display: "none" }} onChange={(e) => setFile(e.target.files[0])}/>
                         </div>
-                        <button onClick={handleUpdateClick} className="productButton">Update</button>
+                        <button onClick={handleUpdate} className="productButton">Update</button>
                     </div>
                 </form>
             </div>

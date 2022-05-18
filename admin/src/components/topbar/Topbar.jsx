@@ -1,8 +1,21 @@
 import React from "react";
 import "./topbar.css";
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
+import {logout} from "../../redux/apiCalls";
+import {useDispatch} from "react-redux";
+import {Link} from "react-router-dom";
+import {Button} from "@material-ui/core";
 
 export default function Topbar() {
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch({
+      type: 'USER_LOGOUT'
+    });
+    logout(dispatch);
+  }
+
+
   return (
     <div className="topbar">
       <div className="topbarWrapper">
@@ -10,7 +23,7 @@ export default function Topbar() {
           <span className="logo">webshop admin</span>
         </div>
         <div className="topRight">
-          <div className="topbarIconContainer">
+          {/*<div className="topbarIconContainer">
             <NotificationsNone />
             <span className="topIconBadge">2</span>
           </div>
@@ -20,8 +33,17 @@ export default function Topbar() {
           </div>
           <div className="topbarIconContainer">
             <Settings />
-          </div>
-          <img src="https://images.pexels.com/photos/1526814/pexels-photo-1526814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="" className="topAvatar" />
+          </div>*/}
+          <Link to={"/"}>
+            <Button onClick={handleLogout}>
+              Log out
+            </Button>
+          </Link>
+
+         {/* <div>
+            <img src="https://images.pexels.com/photos/1526814/pexels-photo-1526814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="" className="topAvatar" />
+          </div>*/}
+
         </div>
       </div>
     </div>

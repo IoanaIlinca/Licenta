@@ -1,44 +1,41 @@
-import "./userList.css";
+import "./orderList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { userRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteProduct, deleteUser, getProducts, getUsers} from "../../redux/apiCalls";
+import { getOrders} from "../../redux/apiCalls";
 
-export default function UserList() {
+export default function OrderList() {
     const dispatch = useDispatch();
-    const users = useSelector((state) => state.user.users);
+    const orders = useSelector((state) => state.order.orders);
 
     useEffect(() => {
-        getUsers(dispatch);
+        getOrders(dispatch);
     }, [dispatch]);
 
-    const handleDelete = (id) => {
-        deleteUser(id, dispatch);
-    };
 
   const columns = [
     { field: "_id", headerName: "ID", width: 90 },
     {
-      field: "username",
+      field: "userId",
       headerName: "User",
       width: 200,
       renderCell: (params) => {
         return (
             <div className="userListUser">
-              {params.row.username}
+              {params.row.userId}
             </div>
         );
       },
     },
-    { field: "email", headerName: "Email", width: 200 },
-  /*  {
+    { field: "amount", headerName: "Amount", width: 200 },
+    {
       field: "status",
       headerName: "Status",
       width: 120,
-    },
+    },/*
     {
       field: "transaction",
       headerName: "Transaction Volume",
@@ -47,19 +44,21 @@ export default function UserList() {
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 250,
       renderCell: (params) => {
-        return (
-            <>
-              <Link to={"/user/" + params.row._id}>
-                <button className="userListEdit">Edit</button>
-              </Link>
-              <DeleteOutline
-                  className="userListDelete"
-                  onClick={() => handleDelete(params.row._id)}
-              />
-            </>
-        );
+          return (
+              <>
+                  {params.row.status === "pending" && (
+                      <>
+                          <button className="orderListAccept">Accept</button>
+                          <button className="orderListDecline">Decline</button>
+                      </>
+
+                      )}
+
+                  <button className="orderListView">View</button>
+              </>
+          );
       },
     },
   ];
@@ -67,7 +66,7 @@ export default function UserList() {
   return (
       <div className="userList">
         <DataGrid
-            rows={users}
+            rows={orders}
             disableSelectionOnClick
             columns={columns}
             getRowId={(row) => row._id}

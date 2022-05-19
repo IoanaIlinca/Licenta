@@ -2,16 +2,20 @@ import "./productList.css";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, getProducts } from "../../redux/apiCalls";
+import {productAdded} from "../../web3/web3Init";
 
 export default function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
+  const [deployed, setDeployed] = useState([]);
+  let dep = [];
 
-  useEffect(() => {
-    getProducts(dispatch);
+  useEffect( () => {
+      getProducts(dispatch);
+
   }, [dispatch]);
 
   const handleDelete = (id) => {
@@ -42,17 +46,19 @@ export default function ProductList() {
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 200,
       renderCell: (params) => {
         return (
             <>
               <Link to={"/product/" + params.row._id}>
                 <button className="productListEdit">Edit</button>
               </Link>
+                <button className={deployed[params.row._id] ? "productListDeploy" : "productListDeployDisabled"}>{deployed[params.row._id] ? "Deploy" : "Deployed"}</button>
               <DeleteOutline
                   className="productListDelete"
                   onClick={() => handleDelete(params.row._id)}
               />
+
             </>
         );
       },

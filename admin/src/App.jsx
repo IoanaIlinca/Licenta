@@ -10,20 +10,32 @@ import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
 import Login from "./pages/login/Login";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Web3 from "web3";
 import {useEffect, useState} from "react";
-import {getMere, init} from "./web3/web3Init";
+import {GetMere, Init} from "./web3/web3Init";
 import OrderList from "./pages/orderList/OrderList";
+import {Button} from "@material-ui/core";
+import {setInitTrue} from "./redux/apiCalls";
 
 function App() {
+    const initialised = useSelector((state) => state.blockchain.initialised);
+    const dispatch = useDispatch();
+
+    const setInit = async () => {
+        console.log(initialised)
+        if (initialised === false) {
+            console.log("here");
+            await Init();
+            setInitTrue(dispatch);
+        }
+    }
     useEffect(() => {
-        init();
+        setInit();
     }, []);
 
-    getMere().then((msg) =>{
-            console.log(msg);
-        });
+
+
 
 
 
@@ -31,6 +43,7 @@ function App() {
   return (
     <Router>
       <Switch>
+
         <Route path="/login">
               <Login />
           </Route>

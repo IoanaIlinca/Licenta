@@ -5,6 +5,7 @@ import {logout} from "../../redux/apiCalls";
 import {useDispatch} from "react-redux";
 import {Link} from "react-router-dom";
 import {Button} from "@material-ui/core";
+import {GetMere} from "../../web3/web3Init";
 
 export default function Topbar() {
   const dispatch = useDispatch();
@@ -15,12 +16,21 @@ export default function Topbar() {
     logout(dispatch);
   }
 
+  const prod = () => {
+    console.log("waiting...");
+    GetMere().then((msg) =>{
+      console.log("here");
+      console.log(msg);
+    });
+  }
+
 
   return (
     <div className="topbar">
       <div className="topbarWrapper">
         <div className="topLeft">
           <span className="logo">webshop admin</span>
+          <Button onClick={prod}>Whatever</Button>
         </div>
         <div className="topRight">
           {/*<div className="topbarIconContainer">

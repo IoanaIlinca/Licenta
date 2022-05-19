@@ -21,7 +21,9 @@ import {
     updateProductStart,
     updateProductSuccess
 } from "./productRedux";
+import {setDeployed, setInitialised} from "./blockchainRedux";
 import {getOrderFailure, getOrderStart, getOrderSuccess} from "./orderRedux";
+import {productAdded} from "../web3/web3Init";
 
 export const login = async (dispatch, user) => {
     dispatch(loginStart());
@@ -42,6 +44,14 @@ export const getProducts = async (dispatch) => {
     dispatch(getProductStart());
     try {
         const res = await publicRequest.get("/products");
+        let deployed = [];
+        for (let product of res.data) {
+            await productAdded(product._id).then(depl => {
+                deployed[product._id] = depl;
+            });
+        }
+        console.log(deployed);
+        dispatch(setDeployed(deployed));
         dispatch(getProductSuccess(res.data));
     } catch (err) {
         dispatch(getProductFailure());
@@ -119,3 +129,7 @@ export const getOrders = async (dispatch) => {
         dispatch(getOrderFailure());
     }
 };
+
+export const setInitTrue = async (dispach) => {
+    dispach(setInitialised())
+}

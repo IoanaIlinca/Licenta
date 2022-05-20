@@ -21,9 +21,10 @@ import {
     updateProductStart,
     updateProductSuccess
 } from "./productRedux";
-import {setDeployed, setInitialised} from "./blockchainRedux";
+import {updateDeployed, setDeployed, setInitialised, updateDeployedProduct} from "./blockchainRedux";
 import {getOrderFailure, getOrderStart, getOrderSuccess} from "./orderRedux";
-import {productAdded} from "../web3/web3Init";
+import {deployBill, deployEntry, deployProduct, productAdded} from "../web3/web3Init";
+import {useState} from "react";
 
 export const login = async (dispatch, user) => {
     dispatch(loginStart());
@@ -44,15 +45,14 @@ export const getProducts = async (dispatch) => {
     dispatch(getProductStart());
     try {
         const res = await publicRequest.get("/products");
-        let deployed = [];
+       // dispatch(setDeployed([]));
         for (let product of res.data) {
-            await productAdded(product._id).then(depl => {
-                deployed[product._id] = depl;
+             productAdded(product._id, product.title, product.price, 24).then(depl => {
+                dispatch(updateDeployed({id: product._id, value: depl}));
             });
         }
-        console.log(deployed);
-        dispatch(setDeployed(deployed));
         dispatch(getProductSuccess(res.data));
+
     } catch (err) {
         dispatch(getProductFailure());
     }
@@ -66,6 +66,39 @@ export const deleteProduct = async (id, dispatch) => {
     } catch (err) {
         dispatch(deleteProductFailure());
     }
+};
+
+export const deployProductCall = async (id, name, price, VAT, dispatch) => {
+    const res = await deployProduct(id, name, price, VAT);
+    if (res) {
+        dispatch(updateDeployedProduct({id: id}))
+    }
+
+};
+
+
+export const deployBillCall = async (id, total) => {
+    let date = new Date().getTime();
+   // console.log(date);
+    const res = await deployBill(id, date, total * 100);
+    if (res) {
+        //dispatch(updateDeployedProduct({id: id}))
+        alert("deployed");
+    }
+
+};
+
+
+export const deployEntryCall = async (orderId, productId, quantity) => {
+    console.log(orderId)
+    console.log(productId)
+    console.log(quantity)
+    const res = await deployEntry(orderId, productId, quantity);
+    if (res) {
+        //dispatch(updateDeployedProduct({id: id}))
+        alert("deployed");
+    }
+
 };
 
 export const updateProduct = async (id, product, dispatch) => {

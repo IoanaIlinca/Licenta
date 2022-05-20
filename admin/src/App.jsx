@@ -17,15 +17,14 @@ import {GetMere, Init} from "./web3/web3Init";
 import OrderList from "./pages/orderList/OrderList";
 import {Button} from "@material-ui/core";
 import {setInitTrue} from "./redux/apiCalls";
+import Order from "./pages/order/Order";
 
 function App() {
     const initialised = useSelector((state) => state.blockchain.initialised);
     const dispatch = useDispatch();
 
     const setInit = async () => {
-        console.log(initialised)
         if (initialised === false) {
-            console.log("here");
             await Init();
             setInitTrue(dispatch);
         }
@@ -75,6 +74,9 @@ function App() {
                 </Route>
                   <Route path="/orders">
                   <OrderList />
+                </Route>
+                  <Route path="/order/:id">
+                  <Order />
                 </Route>
               </div>
             </>

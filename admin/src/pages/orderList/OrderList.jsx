@@ -5,7 +5,7 @@ import { userRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import { getOrders} from "../../redux/apiCalls";
+import {deployBillCall, deployProductCall, getOrders} from "../../redux/apiCalls";
 
 export default function OrderList() {
     const dispatch = useDispatch();
@@ -15,6 +15,15 @@ export default function OrderList() {
         getOrders(dispatch);
     }, [dispatch]);
 
+    const handleDeploy = (id, total) => {
+       /* if (isDeployed) {
+            alert("Product already deployed!");
+        }
+        else {
+            deployProductCall(id, name, price, VAT, dispatch);
+        }*/
+        deployBillCall(id, total);
+    }
 
   const columns = [
     { field: "_id", headerName: "ID", width: 90 },
@@ -50,7 +59,7 @@ export default function OrderList() {
               <>
                   {params.row.status === "pending" && (
                       <>
-                          <button className="orderListAccept">Accept</button>
+                          <button onClick={() => {handleDeploy(params.row._id, params.row.amount)}} className="orderListAccept">Accept</button>
                           <button className="orderListDecline">Decline</button>
                       </>
 

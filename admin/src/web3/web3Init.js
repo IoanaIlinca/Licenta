@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import DemoContractBuild from './contracts/Demo.json';
-import ProductRepoContractBuild from './contracts/ProductRepo.json';
 import BillRepoContractBuild from './contracts/BillRepo.json';
+import ProductRepoContractBuild from './contracts/BillRepo.json';
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "../redux/apiCalls";
@@ -9,9 +9,9 @@ import {setInitialised} from "../redux/blockchainRedux";
 
 let selectedAccount;
 
-let productContract;
 let demoContract;
 let billContract;
+let productContract;
 let isInitialised = false;
 
 export const Init = async () => {
@@ -22,6 +22,7 @@ export const Init = async () => {
         provider.request({method: 'eth_requestAccounts'}).then((accounts) => {
             selectedAccount = accounts[0];
         }).catch((err) => {
+            console.log("error");
             console.log(err.message);
             return;
         });
@@ -36,19 +37,18 @@ export const Init = async () => {
     const web3 = new Web3(provider);
 
     const networkId = await web3.eth.net.getId();
-    productContract = new web3.eth.Contract(
-        ProductRepoContractBuild.abi,
-        ProductRepoContractBuild.networks[networkId].address
-    );
-    demoContract = new web3.eth.Contract(
-        DemoContractBuild.abi,
-        DemoContractBuild.networks[networkId].address
-    );
+
+
+    console.log(BillRepoContractBuild.networks[networkId].address);
     billContract = new web3.eth.Contract(
         BillRepoContractBuild.abi,
         BillRepoContractBuild.networks[networkId].address
     );
-    if (productContract) {
+    productContract = new web3.eth.Contract(
+        ProductRepoContractBuild.abi,
+        ProductRepoContractBuild.networks[networkId].address
+    );
+    if (billContract) {
         isInitialised = true;
     }
 }
@@ -57,11 +57,11 @@ export const Init = async () => {
 
 export const GetMere = async () => {
 
-    if(!isInitialised) {
+   // if(!isInitialised) {
         await Init();
-    }
-
-  /* productContract.methods.addProduct("626bd3f0b48eb353f5d023b0", "Puma t-shirt", 7000, 24).send({ from: selectedAccount })
+  // }
+    return billContract.methods.getProduct("626bd3f0b48eb353f5d023b0").call();
+  /* billContract.methods.addProduct("626bd3f0b48eb353f5d023b0", "Puma t-shirt", 7000, 24).send({ from: selectedAccount })
        .on("receipt", function(receipt) {
          console.log("added");
        })
@@ -75,7 +75,26 @@ export const productAdded = async (id, name, price, VAT) => {
     if(!isInitialised) {
         await Init();
     }
-    return productContract.methods.productAdded(id, name, price, VAT).call();
+
+    console.log(
+        billContract.methods
+    )
+    return billContract.methods.productAdded(id, name, price, VAT).call();
+   // return false;
+
+}
+
+
+export const billAdded = async (id) => {
+    if(!isInitialised) {
+        await Init();
+    }
+
+    console.log(
+        billContract.methods
+    )
+    return billContract.methods.idExistsOrders(id).call();
+    // return false;
 
 }
 
@@ -84,7 +103,7 @@ export const deployProduct = async (id, name, price, VAT) => {
         await Init();
     }
     console.log("in deploy product");
-    productContract.methods.addProduct(id, name, price, VAT).send({ from: selectedAccount })
+    billContract.methods.addProduct(id, name, price, VAT).send({ from: selectedAccount })
         .on("receipt", function(receipt) {
             console.log("added");
             return true;
@@ -97,9 +116,9 @@ export const deployProduct = async (id, name, price, VAT) => {
 }
 
 export const deployBill = async (id, date, total) => {
-    if(!isInitialised) {
+    //if(!isInitialised) {
         await Init();
-    }
+    //}
 
     billContract.methods.createBill(id, date, total).send({ from: selectedAccount })
         .on("receipt", function(receipt) {

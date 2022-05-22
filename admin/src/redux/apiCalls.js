@@ -47,7 +47,7 @@ export const getProducts = async (dispatch) => {
         const res = await publicRequest.get("/products");
        // dispatch(setDeployed([]));
         for (let product of res.data) {
-             productAdded(product._id, product.title, product.price, 24).then(depl => {
+             productAdded(product._id, product.title, product.price * 100, 24 * 100).then(depl => {
                 dispatch(updateDeployed({id: product._id, value: depl}));
             });
         }
@@ -69,7 +69,7 @@ export const deleteProduct = async (id, dispatch) => {
 };
 
 export const deployProductCall = async (id, name, price, VAT, dispatch) => {
-    const res = await deployProduct(id, name, price, VAT);
+    const res = await deployProduct(id, name, price * 100, VAT * 100);
     if (res) {
         dispatch(updateDeployedProduct({id: id}))
     }

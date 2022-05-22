@@ -23,7 +23,9 @@ contract ProductRepo {
     }
 
     function productAdded(string memory id, string memory name, uint totalPrice, uint VAT) public view returns (bool) {
-        require(idExists(id));
+        if (idExists(id) == false)
+            return false;
+      //  require(idToProducts[id].length != 0);
         for (uint index = 0; index < idToProducts[id].length; index++) {
             if (keccak256(abi.encodePacked(products[idToProducts[id][index]].name)) == keccak256(abi.encodePacked(name)) &&
                 products[idToProducts[id][index]].priceWithVAT == totalPrice &&
@@ -47,11 +49,13 @@ contract ProductRepo {
         uint index = products.push(Product(name, VAT, totalPrice)) - 1;
         idToProducts[id].push(index);
         ids.push(id);
+        productToOwner[id] = msg.sender;
     }
 
     // add modifier for only owner of the product and the ones that have permissions
     function getProduct(string memory id) public view returns(string memory, string memory, uint, uint) {
         require(idToProducts[id].length != 0);
+        require(productToOwner[id] == msg.sender);
         return (id,
         products[idToProducts[id][idToProducts[id].length - 1]].name,
         products[idToProducts[id][idToProducts[id].length - 1]].VAT,

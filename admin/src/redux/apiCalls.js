@@ -26,7 +26,7 @@ import {
     setDeployed,
     setInitialised,
     updateDeployedProduct,
-    updateDeployedOrders, updateentries, updateEntries
+    updateDeployedOrders, updateentries, updateEntries, emptyEntries
 } from "./blockchainRedux";
 import {getOrderFailure, getOrderStart, getOrderSuccess} from "./orderRedux";
 import {

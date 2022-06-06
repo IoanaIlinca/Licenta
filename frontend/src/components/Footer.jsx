@@ -92,7 +92,7 @@ const Footer = () => {
           the majority have suffered alteration in some form, by injected
           humour, or randomised words which don’t look even slightly believable.
         </Desc>
-        <SocialContainer>
+        {/*<SocialContainer>
           <SocialIcon>
             <Facebook />
           </SocialIcon>
@@ -105,9 +105,9 @@ const Footer = () => {
           <SocialIcon>
             <Pinterest />
           </SocialIcon>
-        </SocialContainer>
+        </SocialContainer>*/}
       </Left>
-      <Center>
+      {/*<Center>
         <Title>Useful Links</Title>
         <List>
           <ListItem>Home</ListItem>
@@ -121,7 +121,7 @@ const Footer = () => {
           <ListItem>Wishlist</ListItem>
           <ListItem>Terms</ListItem>
         </List>
-      </Center>
+      </Center>*/}
       <Right>
         <Title>Contact</Title>
         <ContactItem>

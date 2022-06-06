@@ -11,6 +11,24 @@ export const login = async (dispatch, user) => {
     }
 };
 
-export const logoutCall = async (dispatch, user) => {
-    dispatch(logout());
+export const logoutCall = async (dispatch, user, products) => {
+    try {
+        if (products.length !== 0) {
+            const res = await publicRequest.post("cart", {userId: user._id, products: products});
+        }
+        dispatch(logout());
+    } catch (err) {
+        console.log(err);
+    }
+
+};
+
+
+export const register = async (dispatch, user) => {
+    try {
+        const res = await publicRequest.post("authentication/register", user);
+    } catch (err) {
+        console.log(err);
+        alert(err.message);
+    }
 };

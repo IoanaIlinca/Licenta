@@ -1,4 +1,5 @@
-pragma solidity >=0.5.0 <0.6.0;
+pragma solidity >=0.5.0 <0.6.5;
+
 
 contract ProductRepo {
     struct Product {
@@ -11,7 +12,6 @@ contract ProductRepo {
     string[] internal ids;
 
     mapping (string => uint[]) idToProducts;
-    mapping (uint => string) productToId;
     mapping (string => address) public productToOwner;
     mapping (string => address[]) public productToPermissions;
 
@@ -29,7 +29,7 @@ contract ProductRepo {
             return false;
         for (uint index = 0; index < idToProducts[id].length; index++) {
             if (keccak256(abi.encodePacked(products[idToProducts[id][index]].name)) == keccak256(abi.encodePacked(name)) &&
-                products[idToProducts[id][index]].priceWithVAT == totalPrice &&
+            products[idToProducts[id][index]].priceWithVAT == totalPrice &&
                 products[idToProducts[id][index]].VAT == VAT) {
                 return true;
             }
@@ -48,7 +48,6 @@ contract ProductRepo {
         }
         uint index = products.push(Product(name, VAT, totalPrice)) - 1;
         idToProducts[id].push(index);
-        productToId[index] = id;
         ids.push(id);
     }
 

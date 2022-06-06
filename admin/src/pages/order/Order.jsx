@@ -6,7 +6,15 @@ import { Publish } from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { userRequest } from "../../requestMethods";
-import {addProduct, deployBillCall, deployEntryCall, getEntries, getOrders, updateProduct} from "../../redux/apiCalls";
+import {
+    addProduct,
+    deployBillCall,
+    deployEntryCall,
+    getEntries,
+    getOrders,
+    updateOrder,
+    updateProduct
+} from "../../redux/apiCalls";
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from "firebase/storage";
 import app from "../../firebase";
 import {entryDeployed} from "../../web3/web3Init";
@@ -46,63 +54,47 @@ export default function Order() {
     }
 
     useEffect(() => {
-        const getDeployedEntries = async () => {
+        /*const getDeployedEntries = async () => {
             try {
+                console.log(order);
                 let deployedEntriesNo = 0;
                 const currentEntries = entries.filter(entry => {
                     return entry.orderId = orderId;
                 });
+                console.log(entries);
                 for (let entry of currentEntries) {
+                    console.log(entry)
                     if (entry.value === true)
                         deployedEntriesNo++;
                 }
-                //if (deployedEntriesNo !== order.products.length) {
+                console.log(deployedEntriesNo);
 
                 getEntries(orderId, deployedEntriesNo).then((deployedEntries) => {
                     console.log("those are the entries");
                     console.log(deployedEntries);
                     setDeployedEntries(deployedEntries);
                 });
-               // }
 
             } catch (err) {
                 console.log(err);
             }
         };
-        getDeployedEntries();
+        getDeployedEntries();*/
     }, [orderId, entries]);
 
+    const handleAccept = async () => {
+        updateOrder({_id: order._id, userId: order.userId, products: order.products, amount: order.amount, address: order.address, status: "accepted"});
+    }
 
     return (
         <div className="product">
             <div className="productTitleContainer">
                 <h1 className="productTitle">Order</h1>
+                {order.status !== "accepted" && deployedEntries.length === order.products.length &&
+                    (<button className="orderAcceptButton" onClick={() => {handleAccept()}}>Accept order</button>
+                )}
             </div>
-           {/* <div className="productTop">
-                <div className="productTopLeft">
-                    <Chart data={pStats} dataKey="Sales" title="Sales Performance" />
-                </div>
-                <div className="productTopRight">
-                    <div className="productInfoTop">
-                        <img src={product.image} alt="" className="productInfoImg" />
-                        <span className="productName">{product.title}</span>
-                    </div>
-                    <div className="productInfoBottom">
-                        <div className="productInfoItem">
-                            <span className="productInfoKey">id:</span>
-                            <span className="productInfoValue">{product._id}</span>
-                        </div>
-                        <div className="productInfoItem">
-                            <span className="productInfoKey">sales:</span>
-                            <span className="productInfoValue">5123</span>
-                        </div>
-                        <div className="productInfoItem">
-                            <span className="productInfoKey">in stock:</span>
-                            <span className="productInfoValue">{product.inStock}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>*/}
+
             <div className="productBottom">
                 <form className="productForm">
                     <div className="productFormLeft">
@@ -116,13 +108,13 @@ export default function Order() {
                                     </img>
                                     <div>{products[products.findIndex((item) => item._id === entry.productId)].title} </div>
                                     <div>{entry.quantity} x {products[products.findIndex((item) => item._id === entry.productId)].price}</div>
-                                   {/* Get price from blockchain
+                                    Get price from blockchain
                                     <div>{products[products.findIndex((item) => item._id === entry.productId)].color}: {products[products.findIndex((item) => item._id === entry.productId)].price}</div>
-                                    maybe add color and quantity*/}
+                                    maybe add color and quantity
                                     { order.status === 'processing' && entries.find((item) => item.orderId === orderId && item.productId === entry.productId).value === false &&
                                     (
                                         <>
-                                            {deployedProducts.find((item) => item.id === entry.productId).value ?
+                                            {deployedProducts.find((item) => item.id === entry.productId).value === false ?
                                                 <button className="productAddButton" onClick={(e) => {handleAdd(e, entry.productId, entry.quantity)}}>Deploy entry</button>
                                                 : <button className="productNotDeployedButton">Product not deployed</button>
                                             }

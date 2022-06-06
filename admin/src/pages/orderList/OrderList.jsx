@@ -41,6 +41,11 @@ export default function OrderList() {
         updateOrder({_id: currentOrder._id, userId: currentOrder.userId, products: currentOrder.products, amount: currentOrder.amount, address: currentOrder.address, status: "pending"});
     }
 
+    const handleDecline = async (id) => {
+        let currentOrder = orders.find((order) => order._id === id);
+        updateOrder({_id: currentOrder._id, userId: currentOrder.userId, products: currentOrder.products, amount: currentOrder.amount, address: currentOrder.address, status: "declined"});
+    }
+
   const columns = [
     { field: "_id", headerName: "ID", width: 90 },
     {
@@ -75,8 +80,8 @@ export default function OrderList() {
               <>
                   {params.row.status === "pending" ? (
                       <>
-                          <button onClick={() => {handleDeploy(params.row._id, params.row.amount)}} className="orderListAccept">Accept</button>
-                          <button className="orderListDecline">Decline</button>
+                          <button onClick={() => {handleDeploy(params.row._id, params.row.amount)}} className="orderListAccept">Process</button>
+                          <button className="orderListDecline" onClick={() => {handleDecline(params.row._idt)}}>Decline</button>
                       </>
 
                       ) :

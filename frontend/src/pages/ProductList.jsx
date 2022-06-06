@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from "styled-components";
 import {mobile} from "../responsive";
 import Products from "../components/Products";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 const Container = styled.div``
 
@@ -50,12 +50,25 @@ function ProductList(props) {
         })
     }
 
+   /* const handleCats = (event) => {
+        const value = event.target.value;
+        return <Link to={"/" + value}  />
+    }*/
+
     return (
         <Container>
             <Title>Products</Title>
             <FilterContainer>
                 <Filter>
                     <FilterText>Filter Products:</FilterText>
+                  {/*  <Select name="category" onChange={handleCats} defaultValue="">
+                            <Option value="">
+                                All
+                            </Option>
+                            <Option value="women">Women</Option>
+                            <Option value="men">Men</Option>
+                    </Select>*/}
+
                     <Select name="color" onChange={handleFilters} defaultValue="">
                         <Option value="">
                             Color
@@ -63,9 +76,9 @@ function ProductList(props) {
                         <Option>White</Option>
                         <Option>Black</Option>
                         <Option>Red</Option>
-                        <Option>Blue</Option>
-                        <Option>Yellow</Option>
-                        <Option>Green</Option>
+                        <Option>Gray</Option>
+                        <Option>Pink</Option>
+                        <Option>Purple</Option>
                     </Select>
                     <Select name="sizes" onChange={handleFilters} defaultValue="">
                         <Option value="">

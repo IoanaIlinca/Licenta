@@ -10,25 +10,30 @@ const cartSlice = createSlice({
     },
     reducers: {
         addProduct: (state, action) => {
-            /// Daca-s marimi sau culori diferite, fa-le separat
-            /* let id = action.payload._id;
-             console.log(id);
-             console.log(state.ids);
-             if (!.includes(id)) {
-                 state.quantity += 1;
-                 state.products.push(action.payload);
-                 state.ids[state.products.length - 1] = id;
-             }
-             else {
-                 state.products[state.ids[id]].quantity = action.payload.quantity;
-             }
-             state.total += action.payload.price * action.payload.quantity;*/
             state.quantity += 1;
             state.products.push(action.payload);
             state.total += action.payload.price * action.payload.quantity;
         },
+        updateProductQuantity: (state, action) => {
+            state.products[action.payload.index].quantity += action.payload.quantity;
+            state.total += action.payload.price * action.payload.quantity;
+        },
+        removeProduct: (state, action) => {
+            state.total -= action.payload.price;
+            state.quantity -= 1;
+            state.products.splice(
+                action.payload.index,
+                1
+            );
+
+        },
+        emptyCart: (state, action) => {
+                state.total = 0;
+                state.quantity = 0;
+                state.products = [];
+        }
     },
 });
 
-export const { addProduct } = cartSlice.actions;
+export const { addProduct, updateProductQuantity, removeProduct, emptyCart } = cartSlice.actions;
 export default cartSlice.reducer;

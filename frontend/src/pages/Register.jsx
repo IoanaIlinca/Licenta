@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import {useState} from "react";
+import {register} from "../redux/apiCalls";
+import {useDispatch} from "react-redux";
 
 const Container = styled.div`
   width: 100vw;
@@ -56,22 +59,84 @@ const Button = styled.button`
 `;
 
 function Register(props) {
+    const [username, setUsername] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const dispatch = useDispatch();
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+            alert('passwords do not match!');
+            return;
+        }
+        register(dispatch, {firstName: firstName, lastName: lastName, email: email, username: username, password: password });
+    };
+
+    const handleInput = (e, type) => {
+        if (type === 'username') {
+            setUsername(e.target.value);
+        }
+        if (type === 'firstName') {
+            setFirstName(e.target.value);
+        }
+        if (type === 'lastName') {
+            setLastName(e.target.value);
+        }
+        if (type === 'email') {
+            setEmail(e.target.value);
+        }
+        if (type === 'password') {
+            setPassword(e.target.value);
+        }
+        if (type === 'confirmPassword') {
+            setConfirmPassword(e.target.value);
+        }
+
+    }
     return (
         <Container>
             <Wrapper>
                 <Title>CREATE AN ACCOUNT</Title>
                 <Form>
-                    <Input placeholder="first name" />
-                    <Input placeholder="last name" />
-                    <Input placeholder="username" />
-                    <Input placeholder="email" />
-                    <Input placeholder="password" />
-                    <Input placeholder="confirm password" />
+                    <Input placeholder="first name"
+                           onChange={(e) => {
+                               handleInput(e, 'firstName')
+                           }}
+                    />
+                    <Input placeholder="last name"
+                           onChange={(e) => {
+                               handleInput(e, 'lastName')
+                           }}
+                    />
+                    <Input placeholder="username"
+                           onChange={(e) => {
+                               handleInput(e, 'username')
+                           }}
+                    />
+                    <Input placeholder="email"
+                           onChange={(e) => {
+                               handleInput(e, 'email')
+                           }}
+                    />
+                    <Input placeholder="password" type="password"
+                           onChange={(e) => {
+                               handleInput(e, 'password')
+                           }}
+                    />
+                    <Input placeholder="confirm password" type="password"
+                           onChange={(e) => {
+                               handleInput(e, 'confirmPassword')
+                           }}
+                    />
                     <Agreement>
                         By creating an account, I consent to the processing of my personal
                         data in accordance with the <b>PRIVACY POLICY</b>
                     </Agreement>
-                    <Button>CREATE</Button>
+                    <Button onClick={handleClick}>CREATE</Button>
                 </Form>
             </Wrapper>
         </Container>

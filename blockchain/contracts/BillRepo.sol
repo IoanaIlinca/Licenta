@@ -1,4 +1,4 @@
-pragma solidity >=0.5.0 <0.6.0;
+pragma solidity >=0.5.0 <0.6.5;
 import "./ProductRepo.sol";
 
 contract BillRepo is ProductRepo{
@@ -89,13 +89,22 @@ contract BillRepo is ProductRepo{
     }
 
 
-    function getProductForEntry(string memory orderId, uint entryNumber) public isOwner(orderId) view returns(string memory, string memory, uint, uint) {
-        uint index = entries[billIdToEntryId[orderToBillId[orderId]][entryNumber]].productIndex;
-        return (
-        productToId[index],
-        products[index].name,
-        products[index].VAT,
-        products[index].priceWithVAT);
+    function getProductForEntry(string memory orderId, string memory productId) public isOwner(orderId) view returns(string memory, string memory, uint, uint) {
+        require(idExists(productId));
+        for (uint iterator = 0; iterator < billIdToEntryId[orderToBillId[orderId]].length; iterator++) {
+            uint currentIndex = entries[billIdToEntryId[orderToBillId[orderId]][iterator]].productIndex;
+            for(uint index = 0; index < idToProducts[productId].length; index++) {
+                if (idToProducts[productId][index] == currentIndex) {
+                    return (
+                    productId,
+                    products[index].name,
+                    products[index].VAT,
+                    products[index].priceWithVAT);
+                }
+            }
+        }
+        revert('Not found');
+
     }
 
     function getProductNameForEntry(string memory orderId, uint entryNumber) public isOwner(orderId) view returns (string memory) {

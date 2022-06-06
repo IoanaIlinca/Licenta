@@ -88,26 +88,41 @@ const BadgeWrapper = styled.div`
 function Navbar() {
     const quantity = useSelector(state => state.cart.quantity);
     const user = useSelector((state) => state.user.currentUser);
+    const products = useSelector(state => state.cart.products);
     const dispatch = useDispatch();
 
     const handleLogout = () => {
         dispatch({
             type: 'USER_LOGOUT'
         });
-        logoutCall(dispatch);
+        logoutCall(dispatch, user, products);
     }
 
         return (
             <Container>
                 <Wrapper>
                     <Left>
-                        <Language>
+                       {/* <Language>
                             EN
                         </Language>
                         <SearchContainer>
                             <Input placeholder="Search" />
                             <Search style={{ color: "gray", fontSize: 16 }} />
-                        </SearchContainer>
+                        </SearchContainer>*/}
+                        {!user &&
+                        <Link to={`/register`}>
+                            <MenuItem>REGISTER</MenuItem>
+                        </Link>
+
+                        }
+                        {!user &&
+                        <Link to={`/login`}>
+                            <MenuItem>SIGN IN</MenuItem>
+                        </Link>
+                        }
+                        {user &&
+                        <MenuItem onClick={handleLogout}>SIGN OUT</MenuItem>
+                        }
                     </Left>
                     <Center>
                         <Link to={`/`}>
@@ -119,20 +134,7 @@ function Navbar() {
 
                     </Center>
                     <Right>
-                        {!user &&
-                            <Link to={`/register`}>
-                                <MenuItem>REGISTER</MenuItem>
-                            </Link>
 
-                        }
-                        {!user &&
-                            <Link to={`/login`}>
-                                <MenuItem>SIGN IN</MenuItem>
-                            </Link>
-                        }
-                        {user &&
-                            <MenuItem onClick={handleLogout}>SIGN OUT</MenuItem>
-                        }
 
                         <MenuItem>
                             <Link to={`/cart`} >

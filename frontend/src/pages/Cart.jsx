@@ -2,11 +2,12 @@ import React from 'react';
 import styled from "styled-components";
 import { Add, Remove, Clear } from "@material-ui/icons";
 import {mobile} from "../responsive";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import {Link, useNavigate} from "react-router-dom";
+import {emptyCart, removeProduct, updateProductQuantity} from "../redux/cartRedux";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -90,6 +91,7 @@ const ProductColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  border: solid black 1px;
   background-color: ${(props) => props.color};
 `;
 
@@ -168,27 +170,61 @@ const DeleteIcon = styled.span`
 
 function Cart(props) {
     const cart = useSelector(state => state.cart);
+    const user = useSelector(state => state.user.currentUser._id);
     const [stripeToken, setStripeToken] = useState(null);
+    const [address, setAddress] = useState(null);
+    const [ordered, setOrdered] = useState(false);
     const history = useNavigate();
+    const dispatch = useDispatch();
 
-    const onToken = (token) => {
+    const onToken = (token, addresses) => {
+        setAddress(addresses.shipping_address_city + ", " +
+            addresses.shipping_address_country + ", " +
+            addresses.shipping_address_country_code + ", " +
+            addresses.shipping_address_line1 + ", " +
+            addresses.shipping_address_zip + ", ");
         setStripeToken(token);
+
     };
+
 
     useEffect(() => {
         const makeRequest = async () => {
             try {
-                const res = await userRequest.post("/checkout/payment", {
-                    tokenId: stripeToken.id,
+                const res = await userRequest.post("/orders", {
+                    userId: user,
                     amount: cart.total,
+                    products: cart.products,
+                    address: address
                 });
+                handleEmptyCart();
+                await setOrdered(true);
+
                 history.push("/success", {
                     stripeData: res.data,
                     products: cart, });
+
             } catch {}
         };
-        stripeToken && makeRequest();
+        address && !ordered && makeRequest();
     }, [stripeToken, cart.total, history]);
+
+    const handleClick = (index, price, quantity) => {
+        if (index !== -1) {
+            dispatch(updateProductQuantity({index: index, price: price, quantity: quantity}));
+        }
+    }
+
+    const handleRemove = (index, price) => {
+        if (index !== -1) {
+            dispatch(removeProduct({index: index, price: price}));
+        }
+    }
+
+    const handleEmptyCart = () => {
+        dispatch(emptyCart({}));
+
+    }
 
     return (
         <Container>
@@ -201,15 +237,13 @@ function Cart(props) {
 
                     <TopTexts>
                         <TopText>Shopping Bag</TopText>
-                       {/* <TopText>Your Wishlist </TopText>*/}
                     </TopTexts>
-
-                    <TopButton type="filled">EMPTY CART</TopButton>
+                    <TopButton type="filled" onClick={() => {handleEmptyCart()}}>EMPTY CART</TopButton>
                 </Top>
                 <Bottom>
                     <Info>
-                        {cart.products.map(product => (
-                            <Product>
+                        {cart.products.map((product, index) => (
+                            <Product key={index}>
 
                                 <ProductDetail>
                                     <Image src={product.image}/>
@@ -229,13 +263,19 @@ function Cart(props) {
                                 <PriceDetail>
 
                                     <ProductAmountContainer>
-                                        <Remove/>
+                                        <div onClick={() => {product.quantity !== 1 && handleClick(index, product.price, -1)}}>
+                                            <Remove />
+                                        </div>
+
                                         <ProductAmount>{product.quantity}</ProductAmount>
-                                        <Add/>
+                                        <div onClick={() => {handleClick(index, product.price,1)}}>
+                                            <Add />
+                                        </div>
+
                                     </ProductAmountContainer>
                                     <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
                                 </PriceDetail>
-                                <DeleteIcon>
+                                <DeleteIcon onClick={() => handleRemove(index, product.price)}>
                                     <Clear/>
                                 </DeleteIcon>
 

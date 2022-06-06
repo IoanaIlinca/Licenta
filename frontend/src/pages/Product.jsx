@@ -2,8 +2,8 @@ import { Add, Remove } from "@material-ui/icons";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
-import { addProduct } from "../redux/cartRedux";
-import { useDispatch } from "react-redux";
+import { addProduct, updateProductQuantity } from "../redux/cartRedux";
+import {useDispatch, useSelector} from "react-redux";
 import {Container,ButtonQuantity, Amount, Button, Wrapper,
         ImageContainer, AmountContainer, AddContainer, FilterSizeOption, FilterSize,
         FilterColor, FilterTitle, Filter, FilterContainer, Price, Description, Title,
@@ -14,6 +14,7 @@ function Product(props) {
     const location = useLocation();
     const id = location.pathname.split("/")[2];
     const [product, setProduct] = useState({});
+    const cartProducts = useSelector((state) => state.cart.products);
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
     const [quantity, setQuantity] = useState(1);
@@ -41,7 +42,14 @@ function Product(props) {
     }
 
    const handleClick = () => {
-        dispatch(addProduct({ ...product, quantity, color, size }));
+        let index = cartProducts.findIndex((item) => item._id === product._id && item.color === color && item.size === size);
+        if (index !== -1) {
+            dispatch(updateProductQuantity({index: index, price: product.price, quantity: quantity}));
+        }
+        else {
+            dispatch(addProduct({ ...product, quantity, color, size }));
+        }
+
     };
 
     return (
@@ -60,14 +68,14 @@ function Product(props) {
                         <Filter>
                             <FilterTitle>Color</FilterTitle>
                             {product.color?.map((c) => (
-                                <FilterColor selected={color === c} color={c} key={c} onClick={() => setColor(c)} />
+                                <FilterColor name="color" selected={color === c} color={c} key={c} onClick={() => setColor(c)} />
                             ))}
                         </Filter>
                         <Filter>
                             <FilterTitle>Size</FilterTitle>
                             <FilterSize onChange={(e) => setSize(e.target.value)}>
                                 {product.sizes?.map((s) => (
-                                    <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                                    <FilterSizeOption name="size" key={s}>{s}</FilterSizeOption>
                                 ))}
                             </FilterSize>
                         </Filter>

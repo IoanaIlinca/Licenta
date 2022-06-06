@@ -38,13 +38,17 @@ export const blockchainSlice = createSlice({
             }
         },
         updateEntries: (state, action) => {
-            let index = state.entries.findIndex((item) => item.orderId === action.payload.orderId && item.productId === action.payload.productId);
+            console.log(action.payload);
+            let index = state.entries.findIndex((item) => (item.orderId === action.payload.orderId && item.productId === action.payload.productId));
             if (index !== -1) {
                 state.entries[index].value = action.payload.value;
             }
             else {
                 state.entries.push(action.payload);
             }
+        },
+        emptyEntries: (state) => {
+            state.entries = [];
         }
     },
 });
@@ -55,7 +59,8 @@ export const {
     updateDeployed,
     updateDeployedProduct,
     updateDeployedOrders,
-    updateEntries
+    updateEntries,
+    emptyEntries
 } = blockchainSlice.actions;
 
 export default blockchainSlice.reducer;

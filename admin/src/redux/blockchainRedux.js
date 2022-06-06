@@ -4,7 +4,9 @@ export const blockchainSlice = createSlice({
     name: "blockchain",
     initialState: {
         initialised: false,
-        deployed: []
+        deployed: [],
+        deployedOrders: [],
+        entries: [],
     },
     reducers: {
         setInitialised: (state) => {
@@ -25,6 +27,24 @@ export const blockchainSlice = createSlice({
         updateDeployedProduct: (state, action) => {
             let index = state.deployed.findIndex((item) => item.id === action.payload.id );
             state.deployed[index].value = true;
+        },
+        updateDeployedOrders: (state, action) => {
+            let index = state.deployedOrders.findIndex((item) => item.id === action.payload.id );
+            if (index !== -1) {
+                state.deployedOrders[index].value = action.payload.value;
+            }
+            else {
+                state.deployedOrders.push(action.payload);
+            }
+        },
+        updateEntries: (state, action) => {
+            let index = state.entries.findIndex((item) => item.orderId === action.payload.orderId && item.productId === action.payload.productId);
+            if (index !== -1) {
+                state.entries[index].value = action.payload.value;
+            }
+            else {
+                state.entries.push(action.payload);
+            }
         }
     },
 });
@@ -33,7 +53,9 @@ export const {
     setInitialised,
     setDeployed,
     updateDeployed,
-    updateDeployedProduct
+    updateDeployedProduct,
+    updateDeployedOrders,
+    updateEntries
 } = blockchainSlice.actions;
 
 export default blockchainSlice.reducer;

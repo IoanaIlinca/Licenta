@@ -5,24 +5,40 @@ import { userRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {deployBillCall, deployProductCall, getOrders} from "../../redux/apiCalls";
+import {deployBillCall, deployProductCall, getOrders, updateOrder, updateOrderStatus} from "../../redux/apiCalls";
+import {billAdded} from "../../web3/web3Init";
 
 export default function OrderList() {
     const dispatch = useDispatch();
     const orders = useSelector((state) => state.order.orders);
+    const deployedOrders = useSelector((state) => state.blockchain.deployedOrders);
 
     useEffect(() => {
         getOrders(dispatch);
     }, [dispatch]);
 
-    const handleDeploy = (id, total) => {
-       /* if (isDeployed) {
-            alert("Product already deployed!");
-        }
-        else {
-            deployProductCall(id, name, price, VAT, dispatch);
-        }*/
+    const handleDeploy = async (id, total) => {
+        /* if (isDeployed) {
+             alert("Product already deployed!");
+         }
+         else {
+             deployProductCall(id, name, price, VAT, dispatch);
+         }*/
         deployBillCall(id, total);
+
+    }
+
+    const handleResetting = async (id) => {
+        /* if (isDeployed) {
+             alert("Product already deployed!");
+         }
+         else {
+             deployProductCall(id, name, price, VAT, dispatch);
+         }*/
+  //      await deployBillCall(id, total);
+        let currentOrder = orders.find((order) => order._id === id);
+        //.currentOrder.status = "pending";
+        updateOrder({_id: currentOrder._id, userId: currentOrder.userId, products: currentOrder.products, amount: currentOrder.amount, address: currentOrder.address, status: "pending"});
     }
 
   const columns = [
@@ -57,15 +73,24 @@ export default function OrderList() {
       renderCell: (params) => {
           return (
               <>
-                  {params.row.status === "pending" && (
+                  {params.row.status === "pending" ? (
                       <>
                           <button onClick={() => {handleDeploy(params.row._id, params.row.amount)}} className="orderListAccept">Accept</button>
                           <button className="orderListDecline">Decline</button>
                       </>
 
-                      )}
+                      ) :
+                      deployedOrders.find((order) => order.id === params.row._id).value === false && (
+                      <button onClick={() => {handleResetting(params.row._id)}} className="orderListAccept">Reset</button>
+                          )
 
-                  <button className="orderListView">View</button>
+                  }
+
+                  <Link to={"/order/" + params.row._id}>
+
+                       <button className="orderListView">View</button>
+                  </Link>
+
               </>
           );
       },

@@ -6,7 +6,7 @@ import {Badge} from "@material-ui/core";
 import { mobile } from "../responsive";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {login, logout} from "../redux/apiCalls";
+import {logoutCall} from "../redux/apiCalls";
 
 const Container = styled.div`
   height: 60px;
@@ -94,7 +94,7 @@ function Navbar() {
         dispatch({
             type: 'USER_LOGOUT'
         });
-        logout(dispatch);
+        logoutCall(dispatch);
     }
 
         return (

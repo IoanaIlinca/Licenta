@@ -22,10 +22,28 @@ contract BillRepo is ProductRepo{
     mapping (string => uint) public orderToBillId;
     mapping (uint => uint[]) public billIdToEntryId;
 
+    modifier isOwner(string memory orderId) {
+        require(billToOwner[orderToBillId[orderId]] == msg.sender);
+        _;
+    }
     function idExistsOrders(string memory id) public view returns (bool) {
         for (uint index = 0; index < orderIds.length; index++) {
             if (keccak256(abi.encodePacked(orderIds[index])) == keccak256(abi.encodePacked(id))) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    function entryDeployedInCurrentBill(string memory orderId, string memory productId, uint quantity) public  isOwner(orderId)  hasPermissions(productId) view returns(bool) {
+        uint billIndex = orderToBillId[orderId];
+        for (uint billEntryIndex = 0; billEntryIndex < billIdToEntryId[billIndex].length; billEntryIndex++) {
+            uint entryIndex = billIdToEntryId[billIndex][billEntryIndex];
+            for (uint product = 0; product < idToProducts[productId].length; product++) {
+                if (idToProducts[productId][product] == entries[entryIndex].productIndex &&
+                    entries[entryIndex].quantity == quantity) {
+                    return true;
+                }
             }
         }
         return false;
@@ -51,8 +69,9 @@ contract BillRepo is ProductRepo{
     }
 
     // check if entry exists, if so, reuse it
-    function addEntry(string memory orderId,  string memory productId, uint quantity) public {
+    function addEntry(string memory orderId,  string memory productId, uint quantity) public isOwner(orderId) {
         require(idExists(productId));
+        require(entryDeployedInCurrentBill(orderId, productId, quantity) == false);
         int index = entryExists(idToProducts[productId][idToProducts[productId].length - 1], quantity);
         if (index != -1) {
             uint billIndex = orderToBillId[orderId];
@@ -65,24 +84,25 @@ contract BillRepo is ProductRepo{
         }
     }
 
-    function getBillByOrderId(string memory orderId) public view returns (uint, uint){
+    function getBillByOrderId(string memory orderId) public isOwner(orderId) view returns (uint, uint) {
         return (bills[orderToBillId[orderId]].date, bills[orderToBillId[orderId]].total);
     }
 
 
-    function getProductForEntry(string memory orderId, uint entryNumber) public view returns( string memory, uint, uint) {
+    function getProductForEntry(string memory orderId, uint entryNumber) public isOwner(orderId) view returns(string memory, string memory, uint, uint) {
         uint index = entries[billIdToEntryId[orderToBillId[orderId]][entryNumber]].productIndex;
         return (
+        productToId[index],
         products[index].name,
         products[index].VAT,
         products[index].priceWithVAT);
     }
 
-    function getProductNameForEntry(string memory orderId, uint entryNumber) public view returns (string memory) {
+    function getProductNameForEntry(string memory orderId, uint entryNumber) public isOwner(orderId) view returns (string memory) {
         return products[entries[billIdToEntryId[orderToBillId[orderId]][entryNumber]].productIndex].name;
     }
 
-    function getVATsByOrderId(string memory orderId) public view returns (uint[] memory) {
+    function getVATsByOrderId(string memory orderId) public isOwner(orderId) view returns (uint[] memory) {
         uint[] memory VATs = new uint[](billIdToEntryId[orderToBillId[orderId]].length);
         for (uint i = 0; i < billIdToEntryId[orderToBillId[orderId]].length; i++) {
             VATs[i] = products[entries[billIdToEntryId[orderToBillId[orderId]][i]].productIndex].VAT;
@@ -90,7 +110,7 @@ contract BillRepo is ProductRepo{
         return VATs;
     }
 
-    function getPricesByOrderId(string memory orderId) public view returns (uint[] memory) {
+    function getPricesByOrderId(string memory orderId) public isOwner(orderId) view returns (uint[] memory) {
         uint[] memory prices = new uint[](billIdToEntryId[orderToBillId[orderId]].length);
         for (uint i = 0; i < billIdToEntryId[orderToBillId[orderId]].length; i++) {
             prices[i] = products[entries[billIdToEntryId[orderToBillId[orderId]][i]].productIndex].priceWithVAT;
@@ -98,7 +118,7 @@ contract BillRepo is ProductRepo{
         return prices;
     }
 
-    function getQuantitiesByOrderId(string memory orderId) public view returns (uint[] memory) {
+    function getQuantitiesByOrderId(string memory orderId) public isOwner(orderId) view returns (uint[] memory) {
         uint[] memory quantities = new uint[](billIdToEntryId[orderToBillId[orderId]].length);
         for (uint i = 0; i < billIdToEntryId[orderToBillId[orderId]].length; i++) {
             quantities[i] = entries[billIdToEntryId[orderToBillId[orderId]][i]].quantity;

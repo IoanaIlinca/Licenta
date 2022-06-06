@@ -4,7 +4,7 @@ import BillRepoContractBuild from './contracts/BillRepo.json';
 import ProductRepoContractBuild from './contracts/BillRepo.json';
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {login} from "../redux/apiCalls";
+import {login, updateOrder, updateOrderStatus} from "../redux/apiCalls";
 import {setInitialised} from "../redux/blockchainRedux";
 
 let selectedAccount;
@@ -60,15 +60,8 @@ export const GetMere = async () => {
    // if(!isInitialised) {
         await Init();
   // }
-    return billContract.methods.getProduct("626bd3f0b48eb353f5d023b0").call();
-  /* billContract.methods.addProduct("626bd3f0b48eb353f5d023b0", "Puma t-shirt", 7000, 24).send({ from: selectedAccount })
-       .on("receipt", function(receipt) {
-         console.log("added");
-       })
-       .on("error", function(error) {
-           // Do something to alert the user their transaction has failed
-           alert(error.message)
-       });*/
+    return billContract.methods.getProductForEntry("627244890135ae520c88e028", 0).call();
+
 }
 
 export const productAdded = async (id, name, price, VAT) => {
@@ -123,11 +116,13 @@ export const deployBill = async (id, date, total) => {
     billContract.methods.createBill(id, date, total).send({ from: selectedAccount })
         .on("receipt", function(receipt) {
             console.log("added");
+            updateOrder({_id: id, status: "processing"});
             return true;
         })
         .on("error", function(error) {
             // Do something to alert the user their transaction has failed
             alert(error.message)
+            updateOrder({_id: id, status: "declined"});
             return false;
         });
 }
@@ -149,3 +144,29 @@ export const deployEntry = async (orderId, productId, quantity) => {
         });
 }
 
+export const entryDeployed = async (orderId, entryId, quantity) => {
+     if(!isInitialised) {
+        await Init();
+     }
+    console.log(orderId)
+    console.log(entryId)
+    console.log(quantity)
+    try {
+        return billContract.methods.entryDeployedInCurrentBill(orderId, entryId, quantity).call();
+    }
+     catch (e) {
+         console.log(e);
+         return false;
+     }
+}
+
+export const getProductForEntry = async (orderId, entryNo) => {
+
+     if(!isInitialised) {
+         await Init();
+     }
+    console.log(orderId);
+    console.log(entryNo);
+    return billContract.methods.getProductForEntry(orderId, entryNo).call();
+    //return "ana are mere";
+}

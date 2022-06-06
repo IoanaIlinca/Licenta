@@ -1,11 +1,11 @@
 import React from "react";
 import "./topbar.css";
 import { NotificationsNone, Language, Settings } from "@material-ui/icons";
-import {logout} from "../../redux/apiCalls";
+import {logoutCall} from "../../redux/apiCalls";
 import {useDispatch} from "react-redux";
 import {Link} from "react-router-dom";
 import {Button} from "@material-ui/core";
-import {GetMere} from "../../web3/web3Init";
+import {billAdded, GetMere} from "../../web3/web3Init";
 
 export default function Topbar() {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ export default function Topbar() {
     dispatch({
       type: 'USER_LOGOUT'
     });
-    logout(dispatch);
+    logoutCall(dispatch);
   }
 
   const prod = () => {

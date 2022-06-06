@@ -26,6 +26,7 @@ const appReducer =  combineReducers({ user: userReducer,  product: productReduce
 
 const rootReducer = (state, action) => {
     if (action.type === 'USER_LOGOUT') {
+        console.log("resetting...");
         return appReducer(undefined, action)
     }
 

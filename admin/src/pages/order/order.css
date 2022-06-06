@@ -1,6 +1,12 @@
 .product {
-  flex: 4;
   padding: 20px;
+  flex: 4;
+}
+
+.entryContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .productTitleContainer {
@@ -9,8 +15,12 @@
   justify-content: space-between;
 }
 
+.productContainer {
+  padding: 20px;
+}
+
 .productAddButton {
-  width: 80px;
+  width: 120px;
   border: none;
   padding: 5px;
   background-color: teal;
@@ -18,6 +28,17 @@
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
+}
+
+
+.productNotDeployedButton {
+  width: 120px;
+  border: none;
+  padding: 5px;
+  background-color: #ded9d9;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .productTop {

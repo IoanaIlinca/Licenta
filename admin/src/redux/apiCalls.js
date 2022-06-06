@@ -6,7 +6,7 @@ import {
     getUserSuccess,
     loginFailure,
     loginStart,
-    loginSuccess
+    loginSuccess, logout
 } from "./userRedux";
 import {publicRequest, userRequest} from "../requestMethods";
 import {
@@ -21,9 +21,23 @@ import {
     updateProductStart,
     updateProductSuccess
 } from "./productRedux";
-import {updateDeployed, setDeployed, setInitialised, updateDeployedProduct} from "./blockchainRedux";
+import {
+    updateDeployed,
+    setDeployed,
+    setInitialised,
+    updateDeployedProduct,
+    updateDeployedOrders, updateentries, updateEntries
+} from "./blockchainRedux";
 import {getOrderFailure, getOrderStart, getOrderSuccess} from "./orderRedux";
-import {deployBill, deployEntry, deployProduct, productAdded} from "../web3/web3Init";
+import {
+    billAdded,
+    deployBill,
+    deployEntry,
+    deployProduct,
+    entryDeployed,
+    getProductForEntry,
+    productAdded
+} from "../web3/web3Init";
 import {useState} from "react";
 
 export const login = async (dispatch, user) => {
@@ -36,7 +50,7 @@ export const login = async (dispatch, user) => {
     }
 };
 
-export const logout = async (dispatch, user) => {
+export const logoutCall = async (dispatch, user) => {
     dispatch(logout());
 };
 
@@ -80,24 +94,25 @@ export const deployProductCall = async (id, name, price, VAT, dispatch) => {
 export const deployBillCall = async (id, total) => {
     let date = new Date().getTime();
    // console.log(date);
-    const res = await deployBill(id, date, total * 100);
-    if (res) {
-        //dispatch(updateDeployedProduct({id: id}))
-        alert("deployed");
-    }
+   try {
+       return await deployBill(id, date, total * 100);
+   }
+   catch (error) {
+       console.log(error.message);
+       return false;
+   }
 
 };
 
 
-export const deployEntryCall = async (orderId, productId, quantity) => {
+export const deployEntryCall = async (dispatch, orderId, productId, quantity) => {
     console.log(orderId)
     console.log(productId)
     console.log(quantity)
     const res = await deployEntry(orderId, productId, quantity);
-    if (res) {
-        //dispatch(updateDeployedProduct({id: id}))
-        alert("deployed");
-    }
+    console.log(res);
+    dispatch(updateEntries({orderId: orderId, productId:  productId, value: res}));
+
 
 };
 
@@ -157,6 +172,31 @@ export const getOrders = async (dispatch) => {
     dispatch(getOrderStart());
     try {
         const res = await userRequest.get("/orders");
+        for (let order of res.data) {
+            billAdded(order._id).then(depl => {
+                dispatch(updateDeployedOrders({id: order._id, value: depl}));
+                for (let product of order.products) {
+                    if (depl === false) {
+                        dispatch(updateEntries({orderId: order._id, productId:  product.productId, value: false}));
+                    }
+                    else {
+                       try{
+                           entryDeployed(order._id, product.productId, product.quantity).then(depl => {
+                               dispatch(updateEntries({orderId: order._id, productId:  product.productId, value: depl}));
+                           })
+                       }
+                       catch (error) {
+                           dispatch(updateEntries({orderId: order._id, productId:  product.productId, value: false}));
+                       }
+                    }
+
+
+                }
+            });
+
+
+
+        }
         dispatch(getOrderSuccess(res.data));
     } catch (err) {
         dispatch(getOrderFailure());
@@ -165,4 +205,17 @@ export const getOrders = async (dispatch) => {
 
 export const setInitTrue = async (dispach) => {
     dispach(setInitialised())
+}
+
+export const updateOrder = async (order) => {
+    const res = await userRequest.put(`/orders/${order._id}`, order);
+}
+
+
+export const getEntries = async (orderId, entriesNo) => {
+   let entries = [];
+    for (let index = 0; index < entriesNo; index++)  {
+        entries.push(await getProductForEntry(orderId, index))
+    }
+    return entries;
 }

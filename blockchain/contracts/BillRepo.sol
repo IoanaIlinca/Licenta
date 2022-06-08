@@ -58,7 +58,6 @@ contract BillRepo is ProductRepo{
         return -1;
     }
 
-
     // require order id not exist
     function createBill(string memory orderId, uint date, uint total) public {
         require(idExistsOrders(orderId) == false);

@@ -94,11 +94,11 @@ export const deployProductCall = async (id, name, price, VAT, dispatch) => {
 export const deployBillCall = async (id, total) => {
     let date = new Date().getTime();
    try {
-       return await deployBill(id, date, total * 100);
+        await deployBill(id, date, total * 100);
+        return true;
    }
    catch (error) {
        console.log(error.message);
-       /*updateOrder(dispatch, {_id: id, status: "declined"});*/
        return false;
    }
 
@@ -131,16 +131,7 @@ export const addProduct = async (product, dispatch) => {
         dispatch(addProductFailure());
     }
 };
-/*
-export const addUser = async (user, dispatch) => {
-    dispatch(addUserStart());
-    try {
-        const res = await userRequest.post(`/products`, product);
-        dispatch(addProductSuccess(res.data));
-    } catch (err) {
-        dispatch(addProductFailure());
-    }
-};*/
+
 
 export const getUsers = async (dispatch) => {
     dispatch(getUserStart());

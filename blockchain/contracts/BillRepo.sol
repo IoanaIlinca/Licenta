@@ -108,32 +108,4 @@ contract BillRepo is ProductRepo{
 
     }
 
-    function getProductNameForEntry(string memory orderId, uint entryNumber) public isOwner(orderId) view returns (string memory) {
-        return products[entries[billIdToEntryId[orderToBillId[orderId]][entryNumber]].productIndex].name;
-    }
-
-    function getVATsByOrderId(string memory orderId) public isOwner(orderId) view returns (uint[] memory) {
-        uint[] memory VATs = new uint[](billIdToEntryId[orderToBillId[orderId]].length);
-        for (uint i = 0; i < billIdToEntryId[orderToBillId[orderId]].length; i++) {
-            VATs[i] = products[entries[billIdToEntryId[orderToBillId[orderId]][i]].productIndex].VAT;
-        }
-        return VATs;
-    }
-
-    function getPricesByOrderId(string memory orderId) public isOwner(orderId) view returns (uint[] memory) {
-        uint[] memory prices = new uint[](billIdToEntryId[orderToBillId[orderId]].length);
-        for (uint i = 0; i < billIdToEntryId[orderToBillId[orderId]].length; i++) {
-            prices[i] = products[entries[billIdToEntryId[orderToBillId[orderId]][i]].productIndex].priceWithVAT;
-        }
-        return prices;
-    }
-
-    function getQuantitiesByOrderId(string memory orderId) public isOwner(orderId) view returns (uint[] memory) {
-        uint[] memory quantities = new uint[](billIdToEntryId[orderToBillId[orderId]].length);
-        for (uint i = 0; i < billIdToEntryId[orderToBillId[orderId]].length; i++) {
-            quantities[i] = entries[billIdToEntryId[orderToBillId[orderId]][i]].quantity;
-        }
-        return quantities;
-    }
-
 }

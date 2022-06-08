@@ -61,14 +61,14 @@
     "absolutePath": "project:/contracts/Demo.sol",
     "exportedSymbols": {
       "Demo": [
-        753
+        537
       ]
     },
-    "id": 754,
+    "id": 538,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 725,
+        "id": 509,
         "literals": [
           "solidity",
           ">=",
@@ -87,19 +87,19 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 753,
+        "id": 537,
         "linearizedBaseContracts": [
-          753
+          537
         ],
         "name": "Demo",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 728,
+            "id": 512,
             "name": "count",
             "nodeType": "VariableDeclaration",
-            "scope": 753,
+            "scope": 537,
             "src": "51:22:1",
             "stateVariable": true,
             "storageLocation": "default",
@@ -108,7 +108,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 726,
+              "id": 510,
               "name": "uint",
               "nodeType": "ElementaryTypeName",
               "src": "51:4:1",
@@ -120,7 +120,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "3230",
-              "id": 727,
+              "id": 511,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -139,54 +139,54 @@
           },
           {
             "body": {
-              "id": 735,
+              "id": 519,
               "nodeType": "Block",
               "src": "159:20:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 733,
+                    "id": 517,
                     "name": "count",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 728,
+                    "referencedDeclaration": 512,
                     "src": "170:5:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 732,
-                  "id": 734,
+                  "functionReturnParameters": 516,
+                  "id": 518,
                   "nodeType": "Return",
                   "src": "163:12:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 736,
+            "id": 520,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "getCounter",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 729,
+              "id": 513,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "134:2:1"
             },
             "returnParameters": {
-              "id": 732,
+              "id": 516,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 731,
+                  "id": 515,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 736,
+                  "scope": 520,
                   "src": "153:4:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -195,7 +195,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 730,
+                    "id": 514,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "153:4:1",
@@ -210,7 +210,7 @@
               ],
               "src": "152:6:1"
             },
-            "scope": 753,
+            "scope": 537,
             "src": "115:64:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -218,25 +218,25 @@
           },
           {
             "body": {
-              "id": 743,
+              "id": 527,
               "nodeType": "Block",
               "src": "241:18:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 741,
+                    "id": 525,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 739,
+                      "id": 523,
                       "name": "count",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 728,
+                      "referencedDeclaration": 512,
                       "src": "245:5:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -248,7 +248,7 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "31",
-                      "id": 740,
+                      "id": 524,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -269,32 +269,32 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 742,
+                  "id": 526,
                   "nodeType": "ExpressionStatement",
                   "src": "245:10:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 744,
+            "id": 528,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "inc",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 737,
+              "id": 521,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "231:2:1"
             },
             "returnParameters": {
-              "id": 738,
+              "id": 522,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "241:0:1"
             },
-            "scope": 753,
+            "scope": 537,
             "src": "219:40:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -302,25 +302,25 @@
           },
           {
             "body": {
-              "id": 751,
+              "id": 535,
               "nodeType": "Block",
               "src": "321:60:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 749,
+                    "id": 533,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 747,
+                      "id": 531,
                       "name": "count",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 728,
+                      "referencedDeclaration": 512,
                       "src": "367:5:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -332,7 +332,7 @@
                     "rightHandSide": {
                       "argumentTypes": null,
                       "hexValue": "31",
-                      "id": 748,
+                      "id": 532,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -353,39 +353,39 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 750,
+                  "id": 534,
                   "nodeType": "ExpressionStatement",
                   "src": "367:10:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 752,
+            "id": 536,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "dec",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 745,
+              "id": 529,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "311:2:1"
             },
             "returnParameters": {
-              "id": 746,
+              "id": 530,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "321:0:1"
             },
-            "scope": 753,
+            "scope": 537,
             "src": "299:82:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 754,
+        "scope": 538,
         "src": "34:349:1"
       }
     ],
@@ -396,7 +396,7 @@
       "absolutePath": "project:/contracts/Demo.sol",
       "exportedSymbols": {
         "Demo": [
-          753
+          537
         ]
       }
     },
@@ -413,7 +413,7 @@
             ".0"
           ]
         },
-        "id": 725,
+        "id": 509,
         "name": "PragmaDirective",
         "src": "0:32:1"
       },
@@ -429,17 +429,17 @@
           "documentation": null,
           "fullyImplemented": true,
           "linearizedBaseContracts": [
-            753
+            537
           ],
           "name": "Demo",
-          "scope": 754
+          "scope": 538
         },
         "children": [
           {
             "attributes": {
               "constant": false,
               "name": "count",
-              "scope": 753,
+              "scope": 537,
               "stateVariable": true,
               "storageLocation": "default",
               "type": "uint256",
@@ -451,7 +451,7 @@
                   "name": "uint",
                   "type": "uint256"
                 },
-                "id": 726,
+                "id": 510,
                 "name": "ElementaryTypeName",
                 "src": "51:4:1"
               },
@@ -468,12 +468,12 @@
                   "type": "int_const 20",
                   "value": "20"
                 },
-                "id": 727,
+                "id": 511,
                 "name": "Literal",
                 "src": "71:2:1"
               }
             ],
-            "id": 728,
+            "id": 512,
             "name": "VariableDeclaration",
             "src": "51:22:1"
           },
@@ -487,7 +487,7 @@
                 null
               ],
               "name": "getCounter",
-              "scope": 753,
+              "scope": 537,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
@@ -500,7 +500,7 @@
                   ]
                 },
                 "children": [],
-                "id": 729,
+                "id": 513,
                 "name": "ParameterList",
                 "src": "134:2:1"
               },
@@ -510,7 +510,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 736,
+                      "scope": 520,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -523,17 +523,17 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 730,
+                        "id": 514,
                         "name": "ElementaryTypeName",
                         "src": "153:4:1"
                       }
                     ],
-                    "id": 731,
+                    "id": 515,
                     "name": "VariableDeclaration",
                     "src": "153:4:1"
                   }
                 ],
-                "id": 732,
+                "id": 516,
                 "name": "ParameterList",
                 "src": "152:6:1"
               },
@@ -541,7 +541,7 @@
                 "children": [
                   {
                     "attributes": {
-                      "functionReturnParameters": 732
+                      "functionReturnParameters": 516
                     },
                     "children": [
                       {
@@ -550,26 +550,26 @@
                           "overloadedDeclarations": [
                             null
                           ],
-                          "referencedDeclaration": 728,
+                          "referencedDeclaration": 512,
                           "type": "uint256",
                           "value": "count"
                         },
-                        "id": 733,
+                        "id": 517,
                         "name": "Identifier",
                         "src": "170:5:1"
                       }
                     ],
-                    "id": 734,
+                    "id": 518,
                     "name": "Return",
                     "src": "163:12:1"
                   }
                 ],
-                "id": 735,
+                "id": 519,
                 "name": "Block",
                 "src": "159:20:1"
               }
             ],
-            "id": 736,
+            "id": 520,
             "name": "FunctionDefinition",
             "src": "115:64:1"
           },
@@ -583,7 +583,7 @@
                 null
               ],
               "name": "inc",
-              "scope": 753,
+              "scope": 537,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
@@ -596,7 +596,7 @@
                   ]
                 },
                 "children": [],
-                "id": 737,
+                "id": 521,
                 "name": "ParameterList",
                 "src": "231:2:1"
               },
@@ -607,7 +607,7 @@
                   ]
                 },
                 "children": [],
-                "id": 738,
+                "id": 522,
                 "name": "ParameterList",
                 "src": "241:0:1"
               },
@@ -632,11 +632,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 728,
+                              "referencedDeclaration": 512,
                               "type": "uint256",
                               "value": "count"
                             },
-                            "id": 739,
+                            "id": 523,
                             "name": "Identifier",
                             "src": "245:5:1"
                           },
@@ -653,27 +653,27 @@
                               "type": "int_const 1",
                               "value": "1"
                             },
-                            "id": 740,
+                            "id": 524,
                             "name": "Literal",
                             "src": "254:1:1"
                           }
                         ],
-                        "id": 741,
+                        "id": 525,
                         "name": "Assignment",
                         "src": "245:10:1"
                       }
                     ],
-                    "id": 742,
+                    "id": 526,
                     "name": "ExpressionStatement",
                     "src": "245:10:1"
                   }
                 ],
-                "id": 743,
+                "id": 527,
                 "name": "Block",
                 "src": "241:18:1"
               }
             ],
-            "id": 744,
+            "id": 528,
             "name": "FunctionDefinition",
             "src": "219:40:1"
           },
@@ -687,7 +687,7 @@
                 null
               ],
               "name": "dec",
-              "scope": 753,
+              "scope": 537,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
@@ -700,7 +700,7 @@
                   ]
                 },
                 "children": [],
-                "id": 745,
+                "id": 529,
                 "name": "ParameterList",
                 "src": "311:2:1"
               },
@@ -711,7 +711,7 @@
                   ]
                 },
                 "children": [],
-                "id": 746,
+                "id": 530,
                 "name": "ParameterList",
                 "src": "321:0:1"
               },
@@ -736,11 +736,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 728,
+                              "referencedDeclaration": 512,
                               "type": "uint256",
                               "value": "count"
                             },
-                            "id": 747,
+                            "id": 531,
                             "name": "Identifier",
                             "src": "367:5:1"
                           },
@@ -757,37 +757,37 @@
                               "type": "int_const 1",
                               "value": "1"
                             },
-                            "id": 748,
+                            "id": 532,
                             "name": "Literal",
                             "src": "376:1:1"
                           }
                         ],
-                        "id": 749,
+                        "id": 533,
                         "name": "Assignment",
                         "src": "367:10:1"
                       }
                     ],
-                    "id": 750,
+                    "id": 534,
                     "name": "ExpressionStatement",
                     "src": "367:10:1"
                   }
                 ],
-                "id": 751,
+                "id": 535,
                 "name": "Block",
                 "src": "321:60:1"
               }
             ],
-            "id": 752,
+            "id": 536,
             "name": "FunctionDefinition",
             "src": "299:82:1"
           }
         ],
-        "id": 753,
+        "id": 537,
         "name": "ContractDefinition",
         "src": "34:349:1"
       }
     ],
-    "id": 754,
+    "id": 538,
     "name": "SourceUnit",
     "src": "0:383:1"
   },
@@ -804,8 +804,7 @@
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-06-08T09:11:17.148Z",
-  "networkType": "ethereum",
+  "updatedAt": "2022-06-08T14:14:04.484Z",
   "devdoc": {
     "methods": {}
   },

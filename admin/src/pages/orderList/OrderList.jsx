@@ -23,7 +23,14 @@ export default function OrderList() {
          }
          else {
             deployBillCall(id, total).then((res) => {
-                updateOrder(dispatch, {_id: id, status: "processing"});
+                billAdded(id).then(depl => {
+                    if (depl) {
+                        updateOrder(dispatch, {_id: id, status: "processing"});
+                    }
+                    else {
+                        updateOrder(dispatch, {_id: id, status: "declined"});
+                    }
+                })
             });
 
 

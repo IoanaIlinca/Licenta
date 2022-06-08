@@ -1,19 +1,19 @@
 export const sliderItems = [
     {
         id: 1,
-        img: "https://ih1.redbubble.net/image.693981649.2786/gtdr,x1800,front,black-c,130,133,1000,1000-bg,f8f8f8.u1.jpg",
+        img: "https://images.pexels.com/photos/1805412/pexels-photo-1805412.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         title: "SUMMER SALE",
         desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     },
     {
         id: 2,
-        img: "https://i.ibb.co/DG69bQ4/2.png",
+        img: "https://images.pexels.com/photos/10512915/pexels-photo-10512915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         title: "AUTUMN COLLECTION",
         desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     },
     {
         id: 3,
-        img: "https://i.ibb.co/cXFnLLV/3.png",
+        img: "https://images.pexels.com/photos/7162016/pexels-photo-7162016.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         title: "LOUNGEWEAR LOVE",
         desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     },

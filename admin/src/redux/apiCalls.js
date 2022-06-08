@@ -93,7 +93,6 @@ export const deployProductCall = async (id, name, price, VAT, dispatch) => {
 
 export const deployBillCall = async (id, total) => {
     let date = new Date().getTime();
-   // console.log(date);
    try {
        return await deployBill(id, date, total * 100);
    }
@@ -107,13 +106,8 @@ export const deployBillCall = async (id, total) => {
 
 
 export const deployEntryCall = async (dispatch, orderId, productId, quantity) => {
-    console.log(orderId)
-    console.log(productId)
-    console.log(quantity)
     const res = await deployEntry(orderId, productId, quantity);
-    console.log(res);
     dispatch(updateEntries({orderId: orderId, productId:  productId, value: res}));
-
 
 };
 

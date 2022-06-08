@@ -27,7 +27,7 @@
 .widgetSmListItem{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin: 20px 0px;
 }
 
@@ -38,6 +38,7 @@
 
 .widgetSmUsername{
     font-weight: 600;
+    padding-left: 25px;
 }
 
 .widgetSmUserTitle{

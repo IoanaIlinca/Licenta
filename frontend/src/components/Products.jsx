@@ -70,7 +70,6 @@ function Products({category, filters, sort}) {
             default:
                 break;
         }
-        console.log(filteredProducts);
     }, [sort]);
 
     return (

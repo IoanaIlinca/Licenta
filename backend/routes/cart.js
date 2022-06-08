@@ -1,4 +1,5 @@
 const Cart = require("../models/Cart");
+const Product = require("../models/Product");
 const {
     verifyToken,
     verifyTokenAndAuthorization,
@@ -8,7 +9,7 @@ const {
 const router = require("express").Router();
 
 //CREATE
-router.post("/", async (req, res) => {
+router.post("/",async (req, res) => {
     const newCart = new Cart(req.body);
 
     try {
@@ -20,10 +21,10 @@ router.post("/", async (req, res) => {
 });
 
 //UPDATE
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.put("/:id",  async (req, res) => {
     try {
-        const updatedCart = await Cart.findByIdAndUpdate(
-            req.params.id,
+        const updatedCart = await Cart.findOneAndUpdate(
+            { userId: req.params.id},
             {
                 $set: req.body,
             },
@@ -46,10 +47,34 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
 });
 
 //GET USER CART
-router.get("/user/:userId", verifyTokenAndAuthorization, async (req, res) => {
+router.get("/user/:userId", async (req, res) => {
     try {
-        const cart = await Cart.findOne({ userId: req.params.userId });
-        res.status(200).json(cart);
+        let cart = await Cart.findOne({ userId: req.params.userId });
+        if (cart) {
+            let newCart = { userId:  cart.userId,
+                products: []};
+            for (let index in cart.products) {
+                let product = await Product.findOne({_id: cart.products[index]._id});
+                let newProduct = {
+                    _id: product._id,
+                    title: product.title,
+                    description: product.description,
+                    image: product.image,
+                    price: product.price,
+                    quantity: cart.products[index].quantity,
+                    color: cart.products[index].color,
+                    size: cart.products[index].size
+                }
+                newCart.products.push(newProduct);
+
+            }
+            res.status(200).json(newCart);
+        }
+        else {
+            res.status(200).json(cart);
+        }
+
+
     } catch (err) {
         res.status(500).json(err);
     }

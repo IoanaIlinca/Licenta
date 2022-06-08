@@ -170,7 +170,7 @@ const DeleteIcon = styled.span`
 
 function Cart(props) {
     const cart = useSelector(state => state.cart);
-    const user = useSelector(state => state.user.currentUser._id);
+    const user = useSelector(state => state.user.currentUser ? state.user.currentUser._id : null);
     const [stripeToken, setStripeToken] = useState(null);
     const [address, setAddress] = useState(null);
     const [ordered, setOrdered] = useState(false);

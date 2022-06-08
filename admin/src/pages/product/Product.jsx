@@ -26,7 +26,6 @@ export default function Product() {
     const [cat, setCat] = useState(product.categories);
     const [siz, setSiz] = useState(product.sizes);
     const [col, setCol] = useState(product.color);
-    console.log(product);
 
     const MONTHS = useMemo(
         () => [
@@ -86,7 +85,6 @@ export default function Product() {
 
     const handleUpdate= (e) => {
         e.preventDefault();
-        console.log(inputs);
         if (file) {
             const fileName = new Date().getTime() + file.name;
             const storage = getStorage(app);

@@ -1,7 +1,7 @@
 .featured {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .featuredItem {
@@ -10,12 +10,15 @@
   padding: 30px;
   border-radius: 10px;
   cursor: pointer;
+    justify-content: center;
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
 }
 
 .featuredTitle{
     font-size: 20px;
+    justify-self: center;
+    justify-content: center;
 }
 
 .featuredMoneyContainer{

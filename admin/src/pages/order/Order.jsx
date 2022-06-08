@@ -63,22 +63,22 @@ export default function Order() {
             let entr = [], depl = [];
             if (order.status === 'processing' || order.status === 'accepted') {
             for (let entry of order.products) {
-                if (deployedProducts.findIndex((item) => item.id === entry._id) !== -1) {
+                if (deployedProducts.find((item) => item.id === entry._id).value === true) {
                     await entryDeployed(order._id, entry._id, entry.quantity).then(result => {
                         entr.push({orderId: order._id, productId: entry._id, value: result});
 
                     });
+                    entr.push({orderId: order._id, productId: entry._id, value: true});
+                }
+                else {
+                    entr.push({orderId: order._id, productId: entry._id, value: false});
                 }
 
                 }
             }
             return entr;
         };
-       /* if (!init && order.status === "accepted") {
-            getBillByOrder(order._id).then(res => {
-                setBill(res);
-            });
-        }*/
+
         !init && getLocalEntries().then(async (res) =>  {
             setEntries(res);
             if (order.status === 'processing' || order.status === 'accepted') {
@@ -87,8 +87,6 @@ export default function Order() {
                 for (let item of deployed) {
                     await getProdInOrder(order._id, item.productId).then(res => {
                         final.push(res);
-                        console.log("here");
-                        console.log(res);
                         setDeployedEntries(final);
                     })
                 }
@@ -114,7 +112,6 @@ export default function Order() {
        await getBillByOrder(order._id).then(res => {
             setBill(res);
         });
-       console.log(bill);
        setBillActive(true)
     }
 
@@ -151,15 +148,6 @@ export default function Order() {
         },
     ]
 
-    console.log(init);
-    console.log(entries);
-    console.log(deployedEntries);
-    /*if (init) {
-        console.log(deployedEntries[0]["0"]);
-    }*/
-    console.log(bill);
-
-    console.log(products);
     return (
         <>
             {init && (

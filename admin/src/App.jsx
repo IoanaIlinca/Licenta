@@ -13,10 +13,10 @@ import Login from "./pages/login/Login";
 import {useDispatch, useSelector} from "react-redux";
 import Web3 from "web3";
 import {useEffect, useState} from "react";
-import {GetMere, Init} from "./web3/web3Init";
+import { Init} from "./web3/web3Init";
 import OrderList from "./pages/orderList/OrderList";
 import {Button} from "@material-ui/core";
-import {setInitTrue} from "./redux/apiCalls";
+import {getOrders, getProducts, getUsers, setInitTrue} from "./redux/apiCalls";
 import Order from "./pages/order/Order";
 
 function App() {
@@ -25,10 +25,14 @@ function App() {
     const admin = useSelector((state) => state.user.currentUser ?  state.user.currentUser.isAdmin : false);
 
     const setInit = async () => {
+        getProducts(dispatch);
+        getUsers(dispatch);
+        getOrders(dispatch);
         if (initialised === false) {
             await Init();
             setInitTrue(dispatch);
         }
+
     }
     useEffect(() => {
         setInit();

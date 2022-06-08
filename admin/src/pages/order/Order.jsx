@@ -68,7 +68,6 @@ export default function Order() {
                         entr.push({orderId: order._id, productId: entry._id, value: result});
 
                     });
-                    entr.push({orderId: order._id, productId: entry._id, value: true});
                 }
                 else {
                     entr.push({orderId: order._id, productId: entry._id, value: false});

@@ -15,6 +15,12 @@ export default function OrderList() {
 
     useEffect(() => {
         getOrders(dispatch);
+        for (let order of deployedOrders) {
+            if (deployedOrders.find((item) => item.id === order.id).value && order.status === 'pending') {
+                updateOrder(dispatch, {_id: order.id, status: "processing"});
+            }
+        }
+
     }, [dispatch]);
 
     const handleDeploy = async (id, total) => {
@@ -23,7 +29,7 @@ export default function OrderList() {
          }
          else {
             deployBillCall(id, total).then((res) => {
-                billAdded(id).then(depl => {
+               billAdded(id).then(depl => {
                     if (depl) {
                         updateOrder(dispatch, {_id: id, status: "processing"});
                     }

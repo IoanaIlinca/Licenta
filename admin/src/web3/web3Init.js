@@ -51,19 +51,9 @@ export const Init = async () => {
     }
 }
 
-/*
 
 
-export const GetMere = async () => {
 
- //if(!isInitialised) {
-        await Init();
-  // }
-   // return billContract.methods.getProductForEntry("627244890135ae520c88e028", 0).call();*!/
-    return billContract.methods.getProduct("627e83cb8177b34059e2e20c").call();
-
-}
-*/
 
 export const productAdded = async (id, name, price, VAT) => {
     if(!isInitialised) {
@@ -72,7 +62,6 @@ export const productAdded = async (id, name, price, VAT) => {
 
 
     return billContract.methods.productAdded(id, name, price, VAT).call();
-   // return false;
 
 }
 
@@ -104,9 +93,9 @@ export const deployProduct = async (id, name, price, VAT) => {
 }
 
 export const deployBill = async (id, date, total) => {
-    //if(!isInitialised) {
+    if(!isInitialised) {
         await Init();
-    //}
+    }
 
     billContract.methods.createBill(id, date, total).send({ from: selectedAccount })
         .on("receipt", function(receipt) {
@@ -158,5 +147,8 @@ export const getProductForEntry = async (orderId, productId) => {
 }
 
 export const getBillByOrder = async (orderId) => {
+    if(!isInitialised) {
+        await Init();
+    }
     return billContract.methods.getBillByOrderId(orderId).call();
 }

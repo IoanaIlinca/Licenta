@@ -10689,12 +10689,13 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x2300Ce30592859988F6d731297ee55a2E400F71d",
-      "transactionHash": "0x8b6d9742a38ccab1fa4360e415889bdf50b0441c5b071bd220bc90763a282d41"
+      "address": "0xF641A362e0288e0bdb3495BA1C274A115e41bDBE",
+      "transactionHash": "0xb250fecebef601b73a5e3fee7c138f56482b1292148ececc28fffa0f7d2c70ae"
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-06-08T14:14:04.500Z",
+  "updatedAt": "2022-06-08T18:37:29.559Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },

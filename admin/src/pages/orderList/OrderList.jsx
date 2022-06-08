@@ -18,32 +18,30 @@ export default function OrderList() {
     }, [dispatch]);
 
     const handleDeploy = async (id, total) => {
-        /* if (isDeployed) {
-             alert("Product already deployed!");
+        if (deployedOrders.find((item) => item.id === id).value) {
+             alert("Order already deployed!");
          }
          else {
-             deployProductCall(id, name, price, VAT, dispatch);
-         }*/
-        deployBillCall(id, total);
+            deployBillCall(id, total).then((res) => {
+                updateOrder(dispatch, {_id: id, status: "processing"});
+            });
+
+
+        }
+
 
     }
 
     const handleResetting = async (id) => {
-        /* if (isDeployed) {
-             alert("Product already deployed!");
-         }
-         else {
-             deployProductCall(id, name, price, VAT, dispatch);
-         }*/
-  //      await deployBillCall(id, total);
-        let currentOrder = orders.find((order) => order._id === id);
-        //.currentOrder.status = "pending";
-        updateOrder({_id: currentOrder._id, userId: currentOrder.userId, products: currentOrder.products, amount: currentOrder.amount, address: currentOrder.address, status: "pending"});
+        if (deployedOrders.find((item) => item.id === id).value) {
+            alert("Order already deployed, cannot be reset");
+            return;
+        }
+        updateOrder(dispatch, {_id: id,  status: "pending"});
     }
 
     const handleDecline = async (id) => {
-        let currentOrder = orders.find((order) => order._id === id);
-        updateOrder({_id: currentOrder._id, userId: currentOrder.userId, products: currentOrder.products, amount: currentOrder.amount, address: currentOrder.address, status: "declined"});
+        updateOrder(dispatch, {_id: id, status: "declined"});
     }
 
   const columns = [
@@ -81,7 +79,7 @@ export default function OrderList() {
                   {params.row.status === "pending" ? (
                       <>
                           <button onClick={() => {handleDeploy(params.row._id, params.row.amount)}} className="orderListAccept">Process</button>
-                          <button className="orderListDecline" onClick={() => {handleDecline(params.row._idt)}}>Decline</button>
+                          <button className="orderListDecline" onClick={() => {handleDecline(params.row._id)}}>Decline</button>
                       </>
 
                       ) :

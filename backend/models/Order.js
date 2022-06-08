@@ -8,12 +8,20 @@ const orderSchema = new mongoose.Schema(
                 _id: {
                     type: String
                 },
-                size: {
-                    type: String
-                },
-                color: {
-                    type: String
-                },
+                details: [
+                    {
+                        size: {
+                            type: String
+                        },
+                        color: {
+                            type: String
+                        },
+                        quantity: {
+                            type: Number,
+                            default: 1,
+                        }
+                    }
+                    ],
                 quantity: {
                     type: Number,
                     default: 1,

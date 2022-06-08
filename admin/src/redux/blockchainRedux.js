@@ -38,10 +38,10 @@ export const blockchainSlice = createSlice({
             }
         },
         updateEntries: (state, action) => {
-            console.log(action.payload);
             let index = state.entries.findIndex((item) => (item.orderId === action.payload.orderId && item.productId === action.payload.productId));
             if (index !== -1) {
                 state.entries[index].value = action.payload.value;
+                state.entries[index].entryProduct = action.payload.entryProduct;
             }
             else {
                 state.entries.push(action.payload);

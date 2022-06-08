@@ -1,6 +1,12 @@
 .product {
   padding: 20px;
-  flex: 4;
+}
+
+.hideBill {
+  justify-content: center;
+  padding: 10px;
+  justify-items: center;
+  cursor: pointer;
 }
 
 .entryContainer {
@@ -105,6 +111,12 @@
   flex-direction: column;
 }
 
+.billContainer {
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+}
+
 .productFormLeft > label {
   margin-bottom: 10px;
   color: gray;
@@ -160,4 +172,13 @@
   cursor: pointer;
   margin-right: 20px;
   cursor: pointer;
+}
+
+.gridHeight {
+  max-height: 400px;
+
+}
+
+.inBill {
+  padding-bottom: 25px;
 }

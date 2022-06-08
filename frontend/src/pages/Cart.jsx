@@ -182,7 +182,7 @@ function Cart(props) {
             addresses.shipping_address_country + ", " +
             addresses.shipping_address_country_code + ", " +
             addresses.shipping_address_line1 + ", " +
-            addresses.shipping_address_zip + ", ");
+            addresses.shipping_address_zip);
         setStripeToken(token);
 
     };
@@ -197,8 +197,9 @@ function Cart(props) {
                     products: cart.products,
                     address: address
                 });
-                handleEmptyCart();
                 await setOrdered(true);
+                handleEmptyCart();
+
 
                 history.push("/success", {
                     stripeData: res.data,

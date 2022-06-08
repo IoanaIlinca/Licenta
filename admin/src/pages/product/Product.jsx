@@ -24,6 +24,8 @@ export default function Product() {
     );
     const [inputs, setInputs] = useState(product);
     const [cat, setCat] = useState(product.categories);
+    const [siz, setSiz] = useState(product.sizes);
+    const [col, setCol] = useState(product.color);
     console.log(product);
 
     const MONTHS = useMemo(
@@ -74,6 +76,14 @@ export default function Product() {
         setCat(e.target.value.split(","));
     };
 
+    const handleSiz = (e) => {
+        setSiz(e.target.value.split(","));
+    };
+
+    const handleCol = (e) => {
+        setCol(e.target.value.split(","));
+    };
+
     const handleUpdate= (e) => {
         e.preventDefault();
         console.log(inputs);
@@ -112,14 +122,14 @@ export default function Product() {
                     // Handle successful uploads on complete
                     // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        const newProduct = { ...inputs, image: downloadURL, categories: cat };
+                        const newProduct = { ...inputs, image: downloadURL, categories: cat, sizes: siz, color: col };
                         updateProduct(productId, newProduct, dispatch);
                     });
                 }
             );
         }
         else {
-            const newProduct = { ...inputs, categories: cat };
+            const newProduct = { ...inputs, categories: cat, sizes: siz, color: col };
             updateProduct(productId, newProduct, dispatch);
         }
     }
@@ -181,6 +191,14 @@ export default function Product() {
                                placeholder={product.categories.join(",")}
                                defaultValue={product.categories.join(",")}
                                onChange={handleCat}/>
+                        <input type="text"
+                               placeholder={product.sizes.join(",")}
+                               defaultValue={product.sizes.join(",")}
+                               onChange={handleSiz}/>
+                        <input type="text"
+                               placeholder={product.color.join(",")}
+                               defaultValue={product.color.join(",")}
+                               onChange={handleCol}/>
                         <label>In Stock</label>
                         <select name="inStock" id="idStock">
                             <option value="true">Yes</option>

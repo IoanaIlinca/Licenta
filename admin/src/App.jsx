@@ -22,6 +22,7 @@ import Order from "./pages/order/Order";
 function App() {
     const initialised = useSelector((state) => state.blockchain.initialised);
     const dispatch = useDispatch();
+    const admin = useSelector((state) => state.user.currentUser ?  state.user.currentUser.isAdmin : false);
 
     const setInit = async () => {
         if (initialised === false) {
@@ -37,8 +38,6 @@ function App() {
 
 
 
-
-    const admin = useSelector((state) => state.user.currentUser ?  state.user.currentUser.isAdmin : null);
   return (
     <Router>
       <Switch>

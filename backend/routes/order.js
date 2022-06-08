@@ -10,7 +10,43 @@ const router = require("express").Router();
 //CREATE
 
 router.post("/", async (req, res) => {
-    const newOrder = new Order(req.body);
+    if (req.body.amount <= 0) {
+        res.status(500).json(err);
+        return;
+    }
+    let order = {
+        userId: req.body.userId,
+        amount: req.body.amount,
+        address: req.body.address,
+        products: [],
+    }
+
+    for (let product of req.body.products) {
+        let index = order.products.findIndex((prod) => prod._id === product._id);
+        //order.quantity += product.quantity;
+        if (index === -1) {
+            let formattedProduct = {
+              _id:  product._id,
+                details: [{
+                  size: product.size,
+                    color: product.color,
+                    quantity: product.quantity
+                }],
+                quantity: product.quantity
+            };
+            order.products.push(formattedProduct);
+        }
+        else {
+           order.products[index].details.push({
+               size: product.size,
+               color: product.color,
+               quantity: product.quantity
+           });
+           order.products[index].quantity += product.quantity;
+        }
+    }
+
+    const newOrder = new Order(order);
 
     try {
         const savedOrder = await newOrder.save();

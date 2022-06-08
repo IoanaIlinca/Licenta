@@ -28,7 +28,7 @@ import {
     updateDeployedProduct,
     updateDeployedOrders, updateentries, updateEntries, emptyEntries
 } from "./blockchainRedux";
-import {getOrderFailure, getOrderStart, getOrderSuccess} from "./orderRedux";
+import {getOrderFailure, getOrderStart, getOrderSuccess, updateOrderStatus} from "./orderRedux";
 import {
     billAdded,
     deployBill,
@@ -99,6 +99,7 @@ export const deployBillCall = async (id, total) => {
    }
    catch (error) {
        console.log(error.message);
+       /*updateOrder(dispatch, {_id: id, status: "declined"});*/
        return false;
    }
 
@@ -120,6 +121,7 @@ export const updateProduct = async (id, product, dispatch) => {
     dispatch(updateProductStart());
     try {
         const res = await userRequest.put(`/products/${id}`, product);
+       // console.log(res.data);
         dispatch(updateProductSuccess(res.data));
     } catch (err) {
         dispatch(updateProductFailure());
@@ -156,6 +158,14 @@ export const getUsers = async (dispatch) => {
     }
 };
 
+export const getUser = async (userId) => {
+    try {
+        return await userRequest.get("/users/" + userId);
+    } catch (err) {
+        alert(err);
+    }
+}
+
 
 export const deleteUser = async (id, dispatch) => {
     dispatch(deleteUserStart());
@@ -170,6 +180,7 @@ export const deleteUser = async (id, dispatch) => {
 
 export const getOrders = async (dispatch) => {
     dispatch(getOrderStart());
+
     try {
         const res = await userRequest.get("/orders");
         for (let order of res.data) {
@@ -177,24 +188,20 @@ export const getOrders = async (dispatch) => {
                 dispatch(updateDeployedOrders({id: order._id, value: depl}));
                 for (let product of order.products) {
                     if (depl === false) {
-                        dispatch(updateEntries({orderId: order._id, productId:  product.productId, value: false}));
+                        dispatch(updateEntries({orderId: order._id, productId:  product._id, value: false}));
                     }
                     else {
                        try{
-                           entryDeployed(order._id, product.productId, product.quantity).then(depl => {
-                               dispatch(updateEntries({orderId: order._id, productId:  product.productId, value: depl}));
+                           entryDeployed(order._id, product._id, product.quantity).then(depl => {
+                               dispatch(updateEntries({orderId: order._id, productId:  product._id, value: depl}));
                            })
                        }
                        catch (error) {
-                           dispatch(updateEntries({orderId: order._id, productId:  product.productId, value: false}));
+                           dispatch(updateEntries({orderId: order._id, productId:  product._id, value: false}));
                        }
                     }
-
-
                 }
             });
-
-
 
         }
         dispatch(getOrderSuccess(res.data));
@@ -207,15 +214,13 @@ export const setInitTrue = async (dispach) => {
     dispach(setInitialised())
 }
 
-export const updateOrder = async (order) => {
+export const updateOrder = async (dispach, order) => {
     const res = await userRequest.put(`/orders/${order._id}`, order);
+    dispach(updateOrderStatus({_id: order._id, status: order.status}));
 }
 
 
-export const getEntries = async (orderId, entriesNo) => {
-   let entries = [];
-    for (let index = 0; index < entriesNo; index++)  {
-        entries.push(await getProductForEntry(orderId, index))
-    }
-    return entries;
+export const getProdInOrder = async (orderId, productId) => {
+
+    return  await getProductForEntry(orderId, productId);
 }

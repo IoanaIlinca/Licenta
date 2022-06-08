@@ -5,7 +5,7 @@ import ProductRepoContractBuild from './contracts/BillRepo.json';
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {login, updateOrder, updateOrderStatus} from "../redux/apiCalls";
-import {setInitialised} from "../redux/blockchainRedux";
+import {emptyEntries, setInitialised} from "../redux/blockchainRedux";
 
 let selectedAccount;
 
@@ -57,10 +57,11 @@ export const Init = async () => {
 
 export const GetMere = async () => {
 
-   // if(!isInitialised) {
+ //if(!isInitialised) {
         await Init();
   // }
-    return billContract.methods.getProductForEntry("627244890135ae520c88e028", 0).call();
+   // return billContract.methods.getProductForEntry("627244890135ae520c88e028", 0).call();*/
+    return billContract.methods.getProduct("627e83cb8177b34059e2e20c").call();
 
 }
 
@@ -151,22 +152,21 @@ export const entryDeployed = async (orderId, entryId, quantity) => {
     console.log(orderId)
     console.log(entryId)
     console.log(quantity)
-    try {
-        return billContract.methods.entryDeployedInCurrentBill(orderId, entryId, quantity).call();
-    }
-     catch (e) {
-         console.log(e);
-         return false;
-     }
+    return billContract.methods.entryDeployedInCurrentBill(orderId, entryId, quantity).call();
+
 }
 
-export const getProductForEntry = async (orderId, entryNo) => {
+export const getProductForEntry = async (orderId, productId) => {
 
      if(!isInitialised) {
          await Init();
      }
     console.log(orderId);
-    console.log(entryNo);
-    return billContract.methods.getProductForEntry(orderId, entryNo).call();
+    console.log(productId);
+    return billContract.methods.getProductForEntry(orderId, productId).call();
     //return "ana are mere";
+}
+
+export const getBillByOrder = async (orderId) => {
+    return billContract.methods.getBillByOrderId(orderId).call();
 }

@@ -1,4 +1,4 @@
-pragma solidity >=0.5.0 <0.6.5;
+pragma solidity >=0.5.0 <0.6.0;
 import "./ProductRepo.sol";
 
 contract BillRepo is ProductRepo{
@@ -91,15 +91,16 @@ contract BillRepo is ProductRepo{
 
     function getProductForEntry(string memory orderId, string memory productId) public isOwner(orderId) view returns(string memory, string memory, uint, uint) {
         require(idExists(productId));
-        for (uint iterator = 0; iterator < billIdToEntryId[orderToBillId[orderId]].length; iterator++) {
-            uint currentIndex = entries[billIdToEntryId[orderToBillId[orderId]][iterator]].productIndex;
+        uint billIndex = orderToBillId[orderId];
+        for (uint iterator = 0; iterator < billIdToEntryId[billIndex].length; iterator++) {
+            uint currentIndex = entries[billIdToEntryId[billIndex][iterator]].productIndex;
             for(uint index = 0; index < idToProducts[productId].length; index++) {
                 if (idToProducts[productId][index] == currentIndex) {
                     return (
                     productId,
-                    products[index].name,
-                    products[index].VAT,
-                    products[index].priceWithVAT);
+                    products[currentIndex].name,
+                    products[currentIndex].VAT,
+                    products[currentIndex].priceWithVAT);
                 }
             }
         }

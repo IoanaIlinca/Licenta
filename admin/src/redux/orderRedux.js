@@ -24,19 +24,20 @@ const orderSlice = createSlice({
             state.isFetching = false;
             state.error = true;
         },
+        updateOrderStatus: (state, action) => {
+            let index = state.orders.findIndex((item) => item._id === action.payload._id);
+            state.orders[index].status = action.payload.status;
+        }
 
     },
 });
 
 export const {
-    loginStart,
-    loginSuccess,
-    loginFailure,
-    logout,
     resetError,
     getOrderStart,
     getOrderSuccess,
     getOrderFailure,
+    updateOrderStatus
     } = orderSlice.actions;
 
 export default orderSlice.reducer;

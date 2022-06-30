@@ -45,10 +45,10 @@ contract ProductRepo {
         }
         else {
             productToOwner[id] = msg.sender;
+            ids.push(id);
         }
         uint index = products.push(Product(name, VAT, totalPrice)) - 1;
         idToProducts[id].push(index);
-        ids.push(id);
     }
 
     function getProduct(string memory id) public hasPermissions(id) view returns(string memory, string memory, uint, uint) {

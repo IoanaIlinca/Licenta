@@ -46,6 +46,10 @@ export default function Order() {
         state.blockchain.deployed
     );
 
+    const orderDeployed = useSelector((state) =>
+        state.blockchain.deployedOrders.find((item) => item.id === orderId).value
+    );
+
     const [user, setUser] = useState(null);
 
 
@@ -180,7 +184,7 @@ export default function Order() {
                                             ))}
 
 
-                                            { order.status === 'processing'  && entries[index].value === false &&
+                                            { order.status === 'processing'  && entries[index].value === false  && orderDeployed === true &&
                                             (
                                                 <>
                                                     {deployedProducts.find((item) => item.id === entry._id).value === true ?

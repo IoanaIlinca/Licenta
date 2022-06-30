@@ -70,6 +70,7 @@ contract BillRepo is ProductRepo{
     // check if entry exists, if so, reuse it
     function addEntry(string memory orderId,  string memory productId, uint quantity) public isOwner(orderId) {
         require(idExists(productId));
+        require(idExistsOrders(orderId) == true);
         require(entryDeployedInCurrentBill(orderId, productId, quantity) == false);
         int index = entryExists(idToProducts[productId][idToProducts[productId].length - 1], quantity);
         if (index != -1) {
